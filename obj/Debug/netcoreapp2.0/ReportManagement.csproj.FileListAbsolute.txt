@@ -1,0 +1,11 @@
+C:\Users\Chaun\Documents\GitHub\ReportPortal\ReportManagement\bin\Debug\netcoreapp2.0\ReportManagement.deps.json
+C:\Users\Chaun\Documents\GitHub\ReportPortal\ReportManagement\bin\Debug\netcoreapp2.0\ReportManagement.runtimeconfig.json
+C:\Users\Chaun\Documents\GitHub\ReportPortal\ReportManagement\bin\Debug\netcoreapp2.0\ReportManagement.runtimeconfig.dev.json
+C:\Users\Chaun\Documents\GitHub\ReportPortal\ReportManagement\bin\Debug\netcoreapp2.0\ReportManagement.dll
+C:\Users\Chaun\Documents\GitHub\ReportPortal\ReportManagement\bin\Debug\netcoreapp2.0\ReportManagement.pdb
+C:\Users\Chaun\Documents\GitHub\ReportPortal\ReportManagement\obj\Debug\netcoreapp2.0\ReportManagement.csproj.CoreCompileInputs.cache
+C:\Users\Chaun\Documents\GitHub\ReportPortal\ReportManagement\obj\Debug\netcoreapp2.0\ReportManagement.AssemblyInfoInputs.cache
+C:\Users\Chaun\Documents\GitHub\ReportPortal\ReportManagement\obj\Debug\netcoreapp2.0\ReportManagement.AssemblyInfo.cs
+C:\Users\Chaun\Documents\GitHub\ReportPortal\ReportManagement\obj\Debug\netcoreapp2.0\ReportManagement.dll
+C:\Users\Chaun\Documents\GitHub\ReportPortal\ReportManagement\obj\Debug\netcoreapp2.0\ReportManagement.pdb
+C:\Users\Chaun\Documents\GitHub\ReportPortal\ReportManagement\obj\Debug\netcoreapp2.0\ReportManagement.csprojResolveAssemblyReference.cache

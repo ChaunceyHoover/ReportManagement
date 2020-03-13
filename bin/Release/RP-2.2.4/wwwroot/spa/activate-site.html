@@ -1,0 +1,837 @@
+﻿<md-content id="activation-form" layout-fill ng-cloak>
+	<div class="warning-message" md-colors="{'background-color': '{{theme}}-warn'}" md-whiteframe="4" layout="row" layout-align="left center">
+		<md-icon style="margin:15px;" md-svg-icon="warning"></md-icon>
+		<h3 style="margin:15px;" flex class="md-title">DO NOT FILL OUT AN ACTIVATION FORM UNTIL TIME OF INSTALL</h3>
+	</div>
+	<div class="warning-message" md-colors="{'background-color': '{{theme}}-warn'}" md-whiteframe="4" layout="row" layout-align="left center">
+		<md-icon style="margin:15px;" md-svg-icon="warning"></md-icon>
+		<h3 style="margin:15px;" flex class="md-title">MAKE SURE ALL ROOMS ARE CONFIRMED IN MAPPING</h3>
+	</div>
+	<div ng-if="errorMessage != ''" class="warning-message" md-colors="{'background-color': '{{theme}}-warn-800'}" md-whiteframe="4" layout="row" layout-align="left center">
+		<md-icon style="margin:15px;" md-svg-icon="warning"></md-icon>
+		<h3 style="margin:15px;" flex class="md-title">{{errorMessage}}</h3>
+	</div>
+	<div ng-style="{'width': '80%', 'margin': '15px 0 15px 10%'}" md-colors="{'background-color': 'grey-A100'}" layout-padding md-whiteframe="4">
+		<div layout="row">
+			<h2 class="md-headline">Room Info</h2>
+		</div>
+		<div style="margin-left: 15px;" layout="column">
+			<div layout="row" hide-xs>
+				<md-input-container>
+					<label>Room Name</label>
+					<input required type="text" ng-model="room.name" />
+				</md-input-container>
+				<span flex="5"></span>
+				<md-select aria-label="system select" ng-model="room.system" style="height:30px" placeholder="Select a system">
+					<md-option ng-repeat="sys in systems" ng-value="sys.id">{{sys.name}}</md-option>
+				</md-select>
+				<span flex="5"></span>
+				<md-input-container flex>
+					<label>HP ID</label>
+					<input required type="text" ng-model="room.hp_id" />
+					<div class="hint">ID from Label on Server</div>
+				</md-input-container>
+			</div>
+			<div layout="column" hide show-xs>
+				<md-input-container>
+					<label>Room Name</label>
+					<input required type="text" ng-model="room.name" />
+				</md-input-container>
+				<md-select aria-label="system select" ng-model="room.system" style="height:30px;margin:0" placeholder="Select a system">
+					<md-option ng-repeat="sys in systems" ng-value="sys.id">{{sys.name}}</md-option>
+				</md-select>
+				<md-input-container>
+					<label>HP ID</label>
+					<input required type="text" ng-model="room.hp_id" />
+					<div class="hint">ID from Label on Server</div>
+				</md-input-container>
+			</div>
+			<div layout="row" hide-xs>
+				<md-input-container>
+					<label>Install Date</label>
+					<md-datepicker required md-max-date="today" ng-model="room.install_date"></md-datepicker>
+				</md-input-container>
+				<md-input-container flex>
+					<label>Billing Email</label>
+					<input required type="text" ng-model="room.email" />
+				</md-input-container>
+				<md-input-container flex>
+					<label>Store Phone Number</label>
+					<input required type="text" phone-input ng-model="room.phone" />
+				</md-input-container>
+			</div>
+			<div layout="column" hide show-xs>
+				<md-input-container>
+					<label>Billing Email</label>
+					<input required type="text" ng-model="room.email" />
+				</md-input-container>
+				<md-input-container>
+					<label>Store Phone Number</label>
+					<input required type="text" phone-input ng-model="room.phone" />
+				</md-input-container>
+				<md-input-container>
+					<label>Install Date</label>
+					<md-datepicker required md-max-date="today" ng-model="room.install_date"></md-datepicker>
+				</md-input-container>
+			</div>
+			<br />
+			<p class="md-title">Installer</p>
+			<div layout="row" style="margin-left:15px;" hide-xs>
+				<md-select aria-label="installers" ng-model="room.installer" ng-change="installerChanged()">
+					<md-option ng-value="0">(New)</md-option>
+					<md-option ng-repeat="install in installers" ng-value="install.id">{{install.fName}} {{install.lName}}</md-option>
+				</md-select>
+				<md-input-container style="height:30px;" flex>
+					<label>Installer First Name</label>
+					<input required ng-disabled="room.installer != 0" type="text" ng-model="installer.fName" />
+				</md-input-container>
+				<md-input-container style="height:30px;" flex>
+					<label>Installer Last Name</label>
+					<input required ng-disabled="room.installer != 0" type="text" ng-model="installer.lName" />
+				</md-input-container>
+			</div>
+			<div layout="column" style="margin-left:15px;" hide show-xs>
+				<md-select style="margin:0" aria-label="installers" ng-model="room.installer" ng-change="installerChanged()">
+					<md-option ng-value="0">(New)</md-option>
+					<md-option ng-repeat="install in installers" ng-value="install.id">{{install.fName}} {{install.lName}}</md-option>
+				</md-select>
+				<span flex="5"></span>
+				<md-input-container style="height:30px;" flex>
+					<label>Installer First Name</label>
+					<input required ng-disabled="room.installer != 0" type="text" ng-model="installer.fName" />
+				</md-input-container>
+				<span flex="5"></span>
+				<md-input-container style="height:30px;" flex>
+					<label>Installer Last Name</label>
+					<input required ng-disabled="room.installer != 0" type="text" ng-model="installer.lName" />
+				</md-input-container>
+				<span flex="5"></span>
+				<md-input-container ng-model="installer.email" style="height:30px">
+					<label>Installer Email</label>
+					<input ng-disabled="room.installer != 0" type="text" ng-model="installer.email" />
+				</md-input-container>
+				<span flex="5"></span>
+				<md-input-container style="height:30px;margin:0 0 24px 0">
+					<label>Installer Phone</label>
+					<input required phone-input ng-disabled="room.installer != 0" type="text" ng-model="installer.phone" />
+				</md-input-container>
+			</div>
+			<div layout="row" style="margin-left:15px" layout-align="center right" hide-xs>
+				<span flex></span>
+				<md-input-container ng-model="installer.email" style="height:30px;width:300px">
+					<label>Installer Email</label>
+					<input ng-disabled="room.installer != 0" type="text" ng-model="installer.email" />
+				</md-input-container>
+				<md-input-container>
+					<label>Installer Phone</label>
+					<input required phone-input ng-disabled="room.installer != 0" type="text" ng-model="installer.phone" />
+				</md-input-container>
+			</div>
+			<p class="md-title">Manager</p>
+			<div layout="row" style="margin-left:15px" hide-xs>
+				<md-select aria-label="managers" ng-model="room.manager" ng-change="managerChanged()">
+					<md-option ng-value="0">(New)</md-option>
+					<md-option ng-repeat="manager in managers" ng-value="manager.id">{{manager.fName}} {{manager.lName}}</md-option>
+				</md-select>
+				<span flex="5"></span>
+				<md-input-container style="height:30px" flex>
+					<label>Manager First Name</label>
+					<input required ng-disabled="room.manager != 0" type="text" ng-model="manager.fName" />
+				</md-input-container>
+				<md-input-container style="height:30px" flex>
+					<label>Manager Last Name</label>
+					<input required ng-disabled="room.manager != 0" type="text" ng-model="manager.lName" />
+				</md-input-container>
+			</div>
+			<div layout="row" style="margin-left:15px" layout-align="center right" hide-xs>
+				<span flex></span>
+				<md-input-container ng-model="manager.email" style="height:30px;width:300px">
+					<label>Manager Email</label>
+					<input ng-disabled="room.manager != 0" type="text" ng-model="manager.email" />
+				</md-input-container>
+				<md-input-container>
+					<label>Manager Phone</label>
+					<input required phone-input ng-disabled="room.manager != 0" type="text" ng-model="manager.phone" />
+				</md-input-container>
+			</div>
+			<div layout="column" style="margin-left:15px" hide show-xs>
+				<md-select style="margin:0;" aria-label="managers" ng-model="room.manager" ng-change="managerChanged()">
+					<md-option ng-value="0">(New)</md-option>
+					<md-option ng-repeat="manager in managers" ng-value="manager.id">{{manager.fName}} {{manager.lName}}</md-option>
+				</md-select>
+				<span flex="5"></span>
+				<md-input-container style="height:30px" flex>
+					<label>Manager First Name</label>
+					<input required ng-disabled="room.manager != 0" type="text" ng-model="manager.fName" />
+				</md-input-container>
+				<span flex="5"></span>
+				<md-input-container style="height:30px" flex>
+					<label>Manager Last Name</label>
+					<input required ng-disabled="room.manager != 0" type="text" ng-model="manager.lName" />
+				</md-input-container>
+				<span flex="5"></span>
+				<md-input-container ng-model="manager.email" style="height:30px">
+					<label>Manager Email</label>
+					<input ng-disabled="room.manager != 0" type="text" ng-model="manager.email" />
+				</md-input-container>
+				<span flex="5"></span>
+				<md-input-container style="height:30px;margin:0 0 24px 0">
+					<label>Manager Phone</label>
+					<input required phone-input ng-disabled="room.manager != 0" type="text" ng-model="manager.phone" />
+				</md-input-container>
+			</div>
+			<p class="md-title">Distributor</p>
+			<div layout="row" style="margin-left:15px;" hide-xs>
+				<md-select ng-model="room.distributor" ng-change="distributorChanged()" placeholder="Distributor">
+					<md-option ng-value="0">(New)</md-option>
+					<md-option ng-repeat="distrib in distributors" ng-value="distrib.id">{{distrib.name}} ({{distrib.userName}})</md-option>
+				</md-select>
+				<span flex="5"></span>
+				<md-input-container style="height:30px" flex>
+					<label>Distributor First Name</label>
+					<input required ng-disabled="room.distributor != 0" type="text" ng-model="distributor.fName" />
+				</md-input-container>
+				<md-input-container style="height:30px" flex>
+					<label>Distributor Last Name</label>
+					<input required ng-disabled="room.distributor != 0" type="text" ng-model="distributor.lName" />
+				</md-input-container>
+			</div>
+			<div layout="column" style="margin-left:15px;" hide show-xs>
+				<md-select ng-model="room.distributor" ng-change="distributorChanged()" placeholder="Distributor">
+					<md-option ng-value="0">(New)</md-option>
+					<md-option ng-repeat="distrib in distributors" ng-value="distrib.id">{{distrib.name}} ({{distrib.userName}})</md-option>
+				</md-select>
+				<md-input-container style="height:30px">
+					<label>Distributor First Name</label>
+					<input required ng-disabled="room.distributor != 0" type="text" ng-model="distributor.fName" />
+				</md-input-container>
+				<md-input-container style="height:30px;margin-bottom:24px">
+					<label>Distributor Last Name</label>
+					<input required ng-disabled="room.distributor != 0" type="text" ng-model="distributor.lName" />
+				</md-input-container>
+			</div>
+			<div ng-if="room.distributor == 0" layout="row">
+				<md-input-container style="height:30px" flex>
+					<label>Distributor Username</label>
+					<input required type="text" ng-model="distributor.userName" />
+				</md-input-container>
+				<span flex="5"></span>
+				<md-input-container style="height:30px" flex>
+					<label>Distributor Password</label>
+					<input required type="text" ng-model="distributor.password" />
+				</md-input-container>
+			</div>
+			<div ng-if="room.distributor == 0" layout="row">
+				<md-input-container style="height:30px" flex>
+					<label>Distributor Email</label>
+					<input type="text" ng-model="distributor.email" />
+				</md-input-container>
+				<span flex="5"></span>
+				<md-input-container style="height:30px" flex>
+					<label>Distributor Phone</label>
+					<input phone-input required type="text" ng-model="distributor.phone" />
+				</md-input-container>
+			</div>
+			<h3 class="md-title">Owner Info</h3>
+			<div layout="row" style="margin-left:15px" hide-xs>
+				<md-select ng-model="room.ownerId" ng-change="ownerChanged()" placeholder="Owner">
+					<md-option ng-value="0">(New)</md-option>
+					<md-option ng-repeat="owner in owners" ng-value="owner.id">{{owner.name}}</md-option>
+				</md-select>
+				<span flex="5"></span>
+				<md-input-container style="height:30px" flex>
+					<label>Owner First Name</label>
+					<input required type="text" ng-disabled="room.ownerId != 0" ng-model="owner.fName" />
+				</md-input-container>
+				<md-input-container style="height:30px" flex>
+					<label>Owner Last Name</label>
+					<input required type="text" ng-disabled="room.ownerId != 0" ng-model="owner.lName" />
+				</md-input-container>
+			</div>
+			<div layout="row" style="margin-left:15px" hide-xs>
+				<md-input-container style="height:30px" flex>
+					<label>Owner Email</label>
+					<input type="text" ng-disabled="room.ownerId != 0" ng-model="owner.email" />
+				</md-input-container>
+				<span flex="5"></span>
+				<md-input-container style="height:30px" flex>
+					<label>Owner Phone</label>
+					<input required type="text" phone-input ng-disabled="room.ownerId != 0" ng-model="owner.phone" />
+				</md-input-container>
+			</div>
+			<div ng-if="preapprove != true" layout="row" style="margin-left:15px" hide-xs>
+				<md-input-container style="height:30px" flex>
+					<label>Username</label>
+					<input required type="text" ng-disabled="room.ownerId != 0" ng-model="owner.userName" />
+				</md-input-container>
+				<span flex="5"></span>
+				<md-input-container ng-if="room.ownerId == 0" flex>
+					<label>Password</label>
+					<input required type="text" ng-model="owner.password" />
+				</md-input-container>
+				<span flex ng-if="room.ownerId != 0"></span>
+			</div>
+			<h3 class="md-title">Site Location</h3>
+			<div layout="row" style="margin-left:15px;" hide-xs>
+				<md-input-container style="height:30px" flex>
+					<label>Site Address</label>
+					<input required type="text" ng-model="room.site_address" />
+				</md-input-container>
+				<md-input-container style="height:30px" flex>
+					<label>Site Address Line 2</label>
+					<input type="text" ng-model="room.site_address2" />
+				</md-input-container>
+			</div>
+			<div layout="row" style="margin-left:15px;" hide-xs>
+				<md-input-container style="height:30px" flex>
+					<label>Site City</label>
+					<input required type="text" ng-model="room.site_city" />
+				</md-input-container>
+				<md-input-container style="height:30px" flex>
+					<label>Site State</label>
+					<input required type="text" ng-model="room.site_state" />
+				</md-input-container>
+				<md-input-container style="height:30px" flex>
+					<label>Country</label>
+					<md-select ng-model="room.site_country">
+						<md-option value="USA" selected>United States</md-option>
+						<md-option value="United Kingdom">United Kingdom</md-option>
+						<md-option value="Afghanistan">Afghanistan</md-option>
+						<md-option value="Albania">Albania</md-option>
+						<md-option value="Algeria">Algeria</md-option>
+						<md-option value="American Samoa">American Samoa</md-option>
+						<md-option value="Andorra">Andorra</md-option>
+						<md-option value="Angola">Angola</md-option>
+						<md-option value="Anguilla">Anguilla</md-option>
+						<md-option value="Antartica">Antarctica</md-option>
+						<md-option value="Antigua and Barbuda">Antigua and Barbuda</md-option>
+						<md-option value="Argentina">Argentina</md-option>
+						<md-option value="Armenia">Armenia</md-option>
+						<md-option value="Aruba">Aruba</md-option>
+						<md-option value="Australia">Australia</md-option>
+						<md-option value="Austria">Austria</md-option>
+						<md-option value="Azerbaijan">Azerbaijan</md-option>
+						<md-option value="Bahamas">Bahamas</md-option>
+						<md-option value="Bahrain">Bahrain</md-option>
+						<md-option value="Bangladesh">Bangladesh</md-option>
+						<md-option value="Barbados">Barbados</md-option>
+						<md-option value="Belarus">Belarus</md-option>
+						<md-option value="Belgium">Belgium</md-option>
+						<md-option value="Belize">Belize</md-option>
+						<md-option value="Benin">Benin</md-option>
+						<md-option value="Bermuda">Bermuda</md-option>
+						<md-option value="Bhutan">Bhutan</md-option>
+						<md-option value="Bolivia">Bolivia</md-option>
+						<md-option value="Bosnia and Herzegowina">Bosnia and Herzegowina</md-option>
+						<md-option value="Botswana">Botswana</md-option>
+						<md-option value="Bouvet Island">Bouvet Island</md-option>
+						<md-option value="Brazil">Brazil</md-option>
+						<md-option value="British Indian Ocean Territory">British Indian Ocean Territory</md-option>
+						<md-option value="Brunei Darussalam">Brunei Darussalam</md-option>
+						<md-option value="Bulgaria">Bulgaria</md-option>
+						<md-option value="Burkina Faso">Burkina Faso</md-option>
+						<md-option value="Burundi">Burundi</md-option>
+						<md-option value="Cambodia">Cambodia</md-option>
+						<md-option value="Cameroon">Cameroon</md-option>
+						<md-option value="Canada">Canada</md-option>
+						<md-option value="Cape Verde">Cape Verde</md-option>
+						<md-option value="Cayman Islands">Cayman Islands</md-option>
+						<md-option value="Central African Republic">Central African Republic</md-option>
+						<md-option value="Chad">Chad</md-option>
+						<md-option value="Chile">Chile</md-option>
+						<md-option value="China">China</md-option>
+						<md-option value="Christmas Island">Christmas Island</md-option>
+						<md-option value="Cocos Islands">Cocos (Keeling) Islands</md-option>
+						<md-option value="Colombia">Colombia</md-option>
+						<md-option value="Comoros">Comoros</md-option>
+						<md-option value="Congo">Congo</md-option>
+						<md-option value="Cook Islands">Cook Islands</md-option>
+						<md-option value="Costa Rica">Costa Rica</md-option>
+						<md-option value="Cota D'Ivoire">Cote d'Ivoire</md-option>
+						<md-option value="Croatia">Croatia (Hrvatska)</md-option>
+						<md-option value="Cuba">Cuba</md-option>
+						<md-option value="Cyprus">Cyprus</md-option>
+						<md-option value="Czech Republic">Czech Republic</md-option>
+						<md-option value="Denmark">Denmark</md-option>
+						<md-option value="Djibouti">Djibouti</md-option>
+						<md-option value="Dominica">Dominica</md-option>
+						<md-option value="Dominican Republic">Dominican Republic</md-option>
+						<md-option value="East Timor">East Timor</md-option>
+						<md-option value="Ecuador">Ecuador</md-option>
+						<md-option value="Egypt">Egypt</md-option>
+						<md-option value="El Salvador">El Salvador</md-option>
+						<md-option value="Equatorial Guinea">Equatorial Guinea</md-option>
+						<md-option value="Eritrea">Eritrea</md-option>
+						<md-option value="Estonia">Estonia</md-option>
+						<md-option value="Ethiopia">Ethiopia</md-option>
+						<md-option value="Falkland Islands">Falkland Islands (Malvinas)</md-option>
+						<md-option value="Faroe Islands">Faroe Islands</md-option>
+						<md-option value="Fiji">Fiji</md-option>
+						<md-option value="Finland">Finland</md-option>
+						<md-option value="France">France</md-option>
+						<md-option value="France Metropolitan">France, Metropolitan</md-option>
+						<md-option value="French Guiana">French Guiana</md-option>
+						<md-option value="French Polynesia">French Polynesia</md-option>
+						<md-option value="French Southern Territories">French Southern Territories</md-option>
+						<md-option value="Gabon">Gabon</md-option>
+						<md-option value="Gambia">Gambia</md-option>
+						<md-option value="Georgia">Georgia</md-option>
+						<md-option value="Germany">Germany</md-option>
+						<md-option value="Ghana">Ghana</md-option>
+						<md-option value="Gibraltar">Gibraltar</md-option>
+						<md-option value="Greece">Greece</md-option>
+						<md-option value="Greenland">Greenland</md-option>
+						<md-option value="Grenada">Grenada</md-option>
+						<md-option value="Guadeloupe">Guadeloupe</md-option>
+						<md-option value="Guam">Guam</md-option>
+						<md-option value="Guatemala">Guatemala</md-option>
+						<md-option value="Guinea">Guinea</md-option>
+						<md-option value="Guinea-Bissau">Guinea-Bissau</md-option>
+						<md-option value="Guyana">Guyana</md-option>
+						<md-option value="Haiti">Haiti</md-option>
+						<md-option value="Heard and McDonald Islands">Heard and Mc Donald Islands</md-option>
+						<md-option value="Holy See">Holy See (Vatican City State)</md-option>
+						<md-option value="Honduras">Honduras</md-option>
+						<md-option value="Hong Kong">Hong Kong</md-option>
+						<md-option value="Hungary">Hungary</md-option>
+						<md-option value="Iceland">Iceland</md-option>
+						<md-option value="India">India</md-option>
+						<md-option value="Indonesia">Indonesia</md-option>
+						<md-option value="Iran">Iran (Islamic Republic of)</md-option>
+						<md-option value="Iraq">Iraq</md-option>
+						<md-option value="Ireland">Ireland</md-option>
+						<md-option value="Israel">Israel</md-option>
+						<md-option value="Italy">Italy</md-option>
+						<md-option value="Jamaica">Jamaica</md-option>
+						<md-option value="Japan">Japan</md-option>
+						<md-option value="Jordan">Jordan</md-option>
+						<md-option value="Kazakhstan">Kazakhstan</md-option>
+						<md-option value="Kenya">Kenya</md-option>
+						<md-option value="Kiribati">Kiribati</md-option>
+						<md-option value="Democratic People's Republic of Korea">Korea, Democratic People's Republic of</md-option>
+						<md-option value="Korea">Korea, Republic of</md-option>
+						<md-option value="Kuwait">Kuwait</md-option>
+						<md-option value="Kyrgyzstan">Kyrgyzstan</md-option>
+						<md-option value="Lao">Lao People's Democratic Republic</md-option>
+						<md-option value="Latvia">Latvia</md-option>
+						<md-option value="Lebanon">Lebanon</md-option>
+						<md-option value="Lesotho">Lesotho</md-option>
+						<md-option value="Liberia">Liberia</md-option>
+						<md-option value="Libyan Arab Jamahiriya">Libyan Arab Jamahiriya</md-option>
+						<md-option value="Liechtenstein">Liechtenstein</md-option>
+						<md-option value="Lithuania">Lithuania</md-option>
+						<md-option value="Luxembourg">Luxembourg</md-option>
+						<md-option value="Macau">Macau</md-option>
+						<md-option value="Macedonia">Macedonia, The Former Yugoslav Republic of</md-option>
+						<md-option value="Madagascar">Madagascar</md-option>
+						<md-option value="Malawi">Malawi</md-option>
+						<md-option value="Malaysia">Malaysia</md-option>
+						<md-option value="Maldives">Maldives</md-option>
+						<md-option value="Mali">Mali</md-option>
+						<md-option value="Malta">Malta</md-option>
+						<md-option value="Marshall Islands">Marshall Islands</md-option>
+						<md-option value="Martinique">Martinique</md-option>
+						<md-option value="Mauritania">Mauritania</md-option>
+						<md-option value="Mauritius">Mauritius</md-option>
+						<md-option value="Mayotte">Mayotte</md-option>
+						<md-option value="Mexico">Mexico</md-option>
+						<md-option value="Micronesia">Micronesia, Federated States of</md-option>
+						<md-option value="Moldova">Moldova, Republic of</md-option>
+						<md-option value="Monaco">Monaco</md-option>
+						<md-option value="Mongolia">Mongolia</md-option>
+						<md-option value="Montserrat">Montserrat</md-option>
+						<md-option value="Morocco">Morocco</md-option>
+						<md-option value="Mozambique">Mozambique</md-option>
+						<md-option value="Myanmar">Myanmar</md-option>
+						<md-option value="Namibia">Namibia</md-option>
+						<md-option value="Nauru">Nauru</md-option>
+						<md-option value="Nepal">Nepal</md-option>
+						<md-option value="Netherlands">Netherlands</md-option>
+						<md-option value="Netherlands Antilles">Netherlands Antilles</md-option>
+						<md-option value="New Caledonia">New Caledonia</md-option>
+						<md-option value="New Zealand">New Zealand</md-option>
+						<md-option value="Nicaragua">Nicaragua</md-option>
+						<md-option value="Niger">Niger</md-option>
+						<md-option value="Nigeria">Nigeria</md-option>
+						<md-option value="Niue">Niue</md-option>
+						<md-option value="Norfolk Island">Norfolk Island</md-option>
+						<md-option value="Northern Mariana Islands">Northern Mariana Islands</md-option>
+						<md-option value="Norway">Norway</md-option>
+						<md-option value="Oman">Oman</md-option>
+						<md-option value="Pakistan">Pakistan</md-option>
+						<md-option value="Palau">Palau</md-option>
+						<md-option value="Panama">Panama</md-option>
+						<md-option value="Papua New Guinea">Papua New Guinea</md-option>
+						<md-option value="Paraguay">Paraguay</md-option>
+						<md-option value="Peru">Peru</md-option>
+						<md-option value="Philippines">Philippines</md-option>
+						<md-option value="Pitcairn">Pitcairn</md-option>
+						<md-option value="Poland">Poland</md-option>
+						<md-option value="Portugal">Portugal</md-option>
+						<md-option value="Puerto Rico">Puerto Rico</md-option>
+						<md-option value="Qatar">Qatar</md-option>
+						<md-option value="Reunion">Reunion</md-option>
+						<md-option value="Romania">Romania</md-option>
+						<md-option value="Russia">Russian Federation</md-option>
+						<md-option value="Rwanda">Rwanda</md-option>
+						<md-option value="Saint Kitts and Nevis">Saint Kitts and Nevis</md-option> 
+						<md-option value="Saint LUCIA">Saint LUCIA</md-option>
+						<md-option value="Saint Vincent">Saint Vincent and the Grenadines</md-option>
+						<md-option value="Samoa">Samoa</md-option>
+						<md-option value="San Marino">San Marino</md-option>
+						<md-option value="Sao Tome and Principe">Sao Tome and Principe</md-option> 
+						<md-option value="Saudi Arabia">Saudi Arabia</md-option>
+						<md-option value="Senegal">Senegal</md-option>
+						<md-option value="Seychelles">Seychelles</md-option>
+						<md-option value="Sierra">Sierra Leone</md-option>
+						<md-option value="Singapore">Singapore</md-option>
+						<md-option value="Slovakia">Slovakia (Slovak Republic)</md-option>
+						<md-option value="Slovenia">Slovenia</md-option>
+						<md-option value="Solomon Islands">Solomon Islands</md-option>
+						<md-option value="Somalia">Somalia</md-option>
+						<md-option value="South Africa">South Africa</md-option>
+						<md-option value="South Georgia">South Georgia and the South Sandwich Islands</md-option>
+						<md-option value="Span">Spain</md-option>
+						<md-option value="SriLanka">Sri Lanka</md-option>
+						<md-option value="St. Helena">St. Helena</md-option>
+						<md-option value="St. Pierre and Miguelon">St. Pierre and Miquelon</md-option>
+						<md-option value="Sudan">Sudan</md-option>
+						<md-option value="Suriname">Suriname</md-option>
+						<md-option value="Svalbard">Svalbard and Jan Mayen Islands</md-option>
+						<md-option value="Swaziland">Swaziland</md-option>
+						<md-option value="Sweden">Sweden</md-option>
+						<md-option value="Switzerland">Switzerland</md-option>
+						<md-option value="Syria">Syrian Arab Republic</md-option>
+						<md-option value="Taiwan">Taiwan, Province of China</md-option>
+						<md-option value="Tajikistan">Tajikistan</md-option>
+						<md-option value="Tanzania">Tanzania, United Republic of</md-option>
+						<md-option value="Thailand">Thailand</md-option>
+						<md-option value="Togo">Togo</md-option>
+						<md-option value="Tokelau">Tokelau</md-option>
+						<md-option value="Tonga">Tonga</md-option>
+						<md-option value="Trinidad and Tobago">Trinidad and Tobago</md-option>
+						<md-option value="Tunisia">Tunisia</md-option>
+						<md-option value="Turkey">Turkey</md-option>
+						<md-option value="Turkmenistan">Turkmenistan</md-option>
+						<md-option value="Turks and Caicos">Turks and Caicos Islands</md-option>
+						<md-option value="Tuvalu">Tuvalu</md-option>
+						<md-option value="Uganda">Uganda</md-option>
+						<md-option value="Ukraine">Ukraine</md-option>
+						<md-option value="United Arab Emirates">United Arab Emirates</md-option>
+						<md-option value="United States Minor Outlying Islands">United States Minor Outlying Islands</md-option>
+						<md-option value="Uruguay">Uruguay</md-option>
+						<md-option value="Uzbekistan">Uzbekistan</md-option>
+						<md-option value="Vanuatu">Vanuatu</md-option>
+						<md-option value="Venezuela">Venezuela</md-option>
+						<md-option value="Vietnam">Viet Nam</md-option>
+						<md-option value="Virgin Islands (British)">Virgin Islands (British)</md-option>
+						<md-option value="Virgin Islands (U.S)">Virgin Islands (U.S.)</md-option>
+						<md-option value="Wallis and Futana Islands">Wallis and Futuna Islands</md-option>
+						<md-option value="Western Sahara">Western Sahara</md-option>
+						<md-option value="Yemen">Yemen</md-option>
+						<md-option value="Yugoslavia">Yugoslavia</md-option>
+						<md-option value="Zambia">Zambia</md-option>
+						<md-option value="Zimbabwe">Zimbabwe</md-option>
+					</md-select>
+				</md-input-container>
+				<md-input-container style="height:30px">
+					<label>Zip</label>
+					<input required type="text" ng-model="room.site_zip" />
+				</md-input-container>
+			</div>
+			<div layout="column" style="margin-left:15px;" hide show-xs>
+				<md-input-container style="height:30px">
+					<label>Site Address</label>
+					<input required type="text" ng-model="room.site_address" />
+				</md-input-container>
+				<md-input-container style="height:30px">
+					<label>Site Address Line 2</label>
+					<input type="text" ng-model="room.site_address2" />
+				</md-input-container>
+				<md-input-container style="height:30px">
+					<label>Site City</label>
+					<input required type="text" ng-model="room.site_city" />
+				</md-input-container>
+				<md-input-container style="height:30px">
+					<label>Site State</label>
+					<input required type="text" ng-model="room.site_state" />
+				</md-input-container>
+				<md-input-container style="height:30px">
+					<label>Country</label>
+					<md-select ng-model="room.site_country">
+						<md-option value="USA" selected>United States</md-option>
+						<md-option value="United Kingdom">United Kingdom</md-option>
+						<md-option value="Afghanistan">Afghanistan</md-option>
+						<md-option value="Albania">Albania</md-option>
+						<md-option value="Algeria">Algeria</md-option>
+						<md-option value="American Samoa">American Samoa</md-option>
+						<md-option value="Andorra">Andorra</md-option>
+						<md-option value="Angola">Angola</md-option>
+						<md-option value="Anguilla">Anguilla</md-option>
+						<md-option value="Antartica">Antarctica</md-option>
+						<md-option value="Antigua and Barbuda">Antigua and Barbuda</md-option>
+						<md-option value="Argentina">Argentina</md-option>
+						<md-option value="Armenia">Armenia</md-option>
+						<md-option value="Aruba">Aruba</md-option>
+						<md-option value="Australia">Australia</md-option>
+						<md-option value="Austria">Austria</md-option>
+						<md-option value="Azerbaijan">Azerbaijan</md-option>
+						<md-option value="Bahamas">Bahamas</md-option>
+						<md-option value="Bahrain">Bahrain</md-option>
+						<md-option value="Bangladesh">Bangladesh</md-option>
+						<md-option value="Barbados">Barbados</md-option>
+						<md-option value="Belarus">Belarus</md-option>
+						<md-option value="Belgium">Belgium</md-option>
+						<md-option value="Belize">Belize</md-option>
+						<md-option value="Benin">Benin</md-option>
+						<md-option value="Bermuda">Bermuda</md-option>
+						<md-option value="Bhutan">Bhutan</md-option>
+						<md-option value="Bolivia">Bolivia</md-option>
+						<md-option value="Bosnia and Herzegowina">Bosnia and Herzegowina</md-option>
+						<md-option value="Botswana">Botswana</md-option>
+						<md-option value="Bouvet Island">Bouvet Island</md-option>
+						<md-option value="Brazil">Brazil</md-option>
+						<md-option value="British Indian Ocean Territory">British Indian Ocean Territory</md-option>
+						<md-option value="Brunei Darussalam">Brunei Darussalam</md-option>
+						<md-option value="Bulgaria">Bulgaria</md-option>
+						<md-option value="Burkina Faso">Burkina Faso</md-option>
+						<md-option value="Burundi">Burundi</md-option>
+						<md-option value="Cambodia">Cambodia</md-option>
+						<md-option value="Cameroon">Cameroon</md-option>
+						<md-option value="Canada">Canada</md-option>
+						<md-option value="Cape Verde">Cape Verde</md-option>
+						<md-option value="Cayman Islands">Cayman Islands</md-option>
+						<md-option value="Central African Republic">Central African Republic</md-option>
+						<md-option value="Chad">Chad</md-option>
+						<md-option value="Chile">Chile</md-option>
+						<md-option value="China">China</md-option>
+						<md-option value="Christmas Island">Christmas Island</md-option>
+						<md-option value="Cocos Islands">Cocos (Keeling) Islands</md-option>
+						<md-option value="Colombia">Colombia</md-option>
+						<md-option value="Comoros">Comoros</md-option>
+						<md-option value="Congo">Congo</md-option>
+						<md-option value="Cook Islands">Cook Islands</md-option>
+						<md-option value="Costa Rica">Costa Rica</md-option>
+						<md-option value="Cota D'Ivoire">Cote d'Ivoire</md-option>
+						<md-option value="Croatia">Croatia (Hrvatska)</md-option>
+						<md-option value="Cuba">Cuba</md-option>
+						<md-option value="Cyprus">Cyprus</md-option>
+						<md-option value="Czech Republic">Czech Republic</md-option>
+						<md-option value="Denmark">Denmark</md-option>
+						<md-option value="Djibouti">Djibouti</md-option>
+						<md-option value="Dominica">Dominica</md-option>
+						<md-option value="Dominican Republic">Dominican Republic</md-option>
+						<md-option value="East Timor">East Timor</md-option>
+						<md-option value="Ecuador">Ecuador</md-option>
+						<md-option value="Egypt">Egypt</md-option>
+						<md-option value="El Salvador">El Salvador</md-option>
+						<md-option value="Equatorial Guinea">Equatorial Guinea</md-option>
+						<md-option value="Eritrea">Eritrea</md-option>
+						<md-option value="Estonia">Estonia</md-option>
+						<md-option value="Ethiopia">Ethiopia</md-option>
+						<md-option value="Falkland Islands">Falkland Islands (Malvinas)</md-option>
+						<md-option value="Faroe Islands">Faroe Islands</md-option>
+						<md-option value="Fiji">Fiji</md-option>
+						<md-option value="Finland">Finland</md-option>
+						<md-option value="France">France</md-option>
+						<md-option value="France Metropolitan">France, Metropolitan</md-option>
+						<md-option value="French Guiana">French Guiana</md-option>
+						<md-option value="French Polynesia">French Polynesia</md-option>
+						<md-option value="French Southern Territories">French Southern Territories</md-option>
+						<md-option value="Gabon">Gabon</md-option>
+						<md-option value="Gambia">Gambia</md-option>
+						<md-option value="Georgia">Georgia</md-option>
+						<md-option value="Germany">Germany</md-option>
+						<md-option value="Ghana">Ghana</md-option>
+						<md-option value="Gibraltar">Gibraltar</md-option>
+						<md-option value="Greece">Greece</md-option>
+						<md-option value="Greenland">Greenland</md-option>
+						<md-option value="Grenada">Grenada</md-option>
+						<md-option value="Guadeloupe">Guadeloupe</md-option>
+						<md-option value="Guam">Guam</md-option>
+						<md-option value="Guatemala">Guatemala</md-option>
+						<md-option value="Guinea">Guinea</md-option>
+						<md-option value="Guinea-Bissau">Guinea-Bissau</md-option>
+						<md-option value="Guyana">Guyana</md-option>
+						<md-option value="Haiti">Haiti</md-option>
+						<md-option value="Heard and McDonald Islands">Heard and Mc Donald Islands</md-option>
+						<md-option value="Holy See">Holy See (Vatican City State)</md-option>
+						<md-option value="Honduras">Honduras</md-option>
+						<md-option value="Hong Kong">Hong Kong</md-option>
+						<md-option value="Hungary">Hungary</md-option>
+						<md-option value="Iceland">Iceland</md-option>
+						<md-option value="India">India</md-option>
+						<md-option value="Indonesia">Indonesia</md-option>
+						<md-option value="Iran">Iran (Islamic Republic of)</md-option>
+						<md-option value="Iraq">Iraq</md-option>
+						<md-option value="Ireland">Ireland</md-option>
+						<md-option value="Israel">Israel</md-option>
+						<md-option value="Italy">Italy</md-option>
+						<md-option value="Jamaica">Jamaica</md-option>
+						<md-option value="Japan">Japan</md-option>
+						<md-option value="Jordan">Jordan</md-option>
+						<md-option value="Kazakhstan">Kazakhstan</md-option>
+						<md-option value="Kenya">Kenya</md-option>
+						<md-option value="Kiribati">Kiribati</md-option>
+						<md-option value="Democratic People's Republic of Korea">Korea, Democratic People's Republic of</md-option>
+						<md-option value="Korea">Korea, Republic of</md-option>
+						<md-option value="Kuwait">Kuwait</md-option>
+						<md-option value="Kyrgyzstan">Kyrgyzstan</md-option>
+						<md-option value="Lao">Lao People's Democratic Republic</md-option>
+						<md-option value="Latvia">Latvia</md-option>
+						<md-option value="Lebanon">Lebanon</md-option>
+						<md-option value="Lesotho">Lesotho</md-option>
+						<md-option value="Liberia">Liberia</md-option>
+						<md-option value="Libyan Arab Jamahiriya">Libyan Arab Jamahiriya</md-option>
+						<md-option value="Liechtenstein">Liechtenstein</md-option>
+						<md-option value="Lithuania">Lithuania</md-option>
+						<md-option value="Luxembourg">Luxembourg</md-option>
+						<md-option value="Macau">Macau</md-option>
+						<md-option value="Macedonia">Macedonia, The Former Yugoslav Republic of</md-option>
+						<md-option value="Madagascar">Madagascar</md-option>
+						<md-option value="Malawi">Malawi</md-option>
+						<md-option value="Malaysia">Malaysia</md-option>
+						<md-option value="Maldives">Maldives</md-option>
+						<md-option value="Mali">Mali</md-option>
+						<md-option value="Malta">Malta</md-option>
+						<md-option value="Marshall Islands">Marshall Islands</md-option>
+						<md-option value="Martinique">Martinique</md-option>
+						<md-option value="Mauritania">Mauritania</md-option>
+						<md-option value="Mauritius">Mauritius</md-option>
+						<md-option value="Mayotte">Mayotte</md-option>
+						<md-option value="Mexico">Mexico</md-option>
+						<md-option value="Micronesia">Micronesia, Federated States of</md-option>
+						<md-option value="Moldova">Moldova, Republic of</md-option>
+						<md-option value="Monaco">Monaco</md-option>
+						<md-option value="Mongolia">Mongolia</md-option>
+						<md-option value="Montserrat">Montserrat</md-option>
+						<md-option value="Morocco">Morocco</md-option>
+						<md-option value="Mozambique">Mozambique</md-option>
+						<md-option value="Myanmar">Myanmar</md-option>
+						<md-option value="Namibia">Namibia</md-option>
+						<md-option value="Nauru">Nauru</md-option>
+						<md-option value="Nepal">Nepal</md-option>
+						<md-option value="Netherlands">Netherlands</md-option>
+						<md-option value="Netherlands Antilles">Netherlands Antilles</md-option>
+						<md-option value="New Caledonia">New Caledonia</md-option>
+						<md-option value="New Zealand">New Zealand</md-option>
+						<md-option value="Nicaragua">Nicaragua</md-option>
+						<md-option value="Niger">Niger</md-option>
+						<md-option value="Nigeria">Nigeria</md-option>
+						<md-option value="Niue">Niue</md-option>
+						<md-option value="Norfolk Island">Norfolk Island</md-option>
+						<md-option value="Northern Mariana Islands">Northern Mariana Islands</md-option>
+						<md-option value="Norway">Norway</md-option>
+						<md-option value="Oman">Oman</md-option>
+						<md-option value="Pakistan">Pakistan</md-option>
+						<md-option value="Palau">Palau</md-option>
+						<md-option value="Panama">Panama</md-option>
+						<md-option value="Papua New Guinea">Papua New Guinea</md-option>
+						<md-option value="Paraguay">Paraguay</md-option>
+						<md-option value="Peru">Peru</md-option>
+						<md-option value="Philippines">Philippines</md-option>
+						<md-option value="Pitcairn">Pitcairn</md-option>
+						<md-option value="Poland">Poland</md-option>
+						<md-option value="Portugal">Portugal</md-option>
+						<md-option value="Puerto Rico">Puerto Rico</md-option>
+						<md-option value="Qatar">Qatar</md-option>
+						<md-option value="Reunion">Reunion</md-option>
+						<md-option value="Romania">Romania</md-option>
+						<md-option value="Russia">Russian Federation</md-option>
+						<md-option value="Rwanda">Rwanda</md-option>
+						<md-option value="Saint Kitts and Nevis">Saint Kitts and Nevis</md-option>
+						<md-option value="Saint LUCIA">Saint LUCIA</md-option>
+						<md-option value="Saint Vincent">Saint Vincent and the Grenadines</md-option>
+						<md-option value="Samoa">Samoa</md-option>
+						<md-option value="San Marino">San Marino</md-option>
+						<md-option value="Sao Tome and Principe">Sao Tome and Principe</md-option>
+						<md-option value="Saudi Arabia">Saudi Arabia</md-option>
+						<md-option value="Senegal">Senegal</md-option>
+						<md-option value="Seychelles">Seychelles</md-option>
+						<md-option value="Sierra">Sierra Leone</md-option>
+						<md-option value="Singapore">Singapore</md-option>
+						<md-option value="Slovakia">Slovakia (Slovak Republic)</md-option>
+						<md-option value="Slovenia">Slovenia</md-option>
+						<md-option value="Solomon Islands">Solomon Islands</md-option>
+						<md-option value="Somalia">Somalia</md-option>
+						<md-option value="South Africa">South Africa</md-option>
+						<md-option value="South Georgia">South Georgia and the South Sandwich Islands</md-option>
+						<md-option value="Span">Spain</md-option>
+						<md-option value="SriLanka">Sri Lanka</md-option>
+						<md-option value="St. Helena">St. Helena</md-option>
+						<md-option value="St. Pierre and Miguelon">St. Pierre and Miquelon</md-option>
+						<md-option value="Sudan">Sudan</md-option>
+						<md-option value="Suriname">Suriname</md-option>
+						<md-option value="Svalbard">Svalbard and Jan Mayen Islands</md-option>
+						<md-option value="Swaziland">Swaziland</md-option>
+						<md-option value="Sweden">Sweden</md-option>
+						<md-option value="Switzerland">Switzerland</md-option>
+						<md-option value="Syria">Syrian Arab Republic</md-option>
+						<md-option value="Taiwan">Taiwan, Province of China</md-option>
+						<md-option value="Tajikistan">Tajikistan</md-option>
+						<md-option value="Tanzania">Tanzania, United Republic of</md-option>
+						<md-option value="Thailand">Thailand</md-option>
+						<md-option value="Togo">Togo</md-option>
+						<md-option value="Tokelau">Tokelau</md-option>
+						<md-option value="Tonga">Tonga</md-option>
+						<md-option value="Trinidad and Tobago">Trinidad and Tobago</md-option>
+						<md-option value="Tunisia">Tunisia</md-option>
+						<md-option value="Turkey">Turkey</md-option>
+						<md-option value="Turkmenistan">Turkmenistan</md-option>
+						<md-option value="Turks and Caicos">Turks and Caicos Islands</md-option>
+						<md-option value="Tuvalu">Tuvalu</md-option>
+						<md-option value="Uganda">Uganda</md-option>
+						<md-option value="Ukraine">Ukraine</md-option>
+						<md-option value="United Arab Emirates">United Arab Emirates</md-option>
+						<md-option value="United States Minor Outlying Islands">United States Minor Outlying Islands</md-option>
+						<md-option value="Uruguay">Uruguay</md-option>
+						<md-option value="Uzbekistan">Uzbekistan</md-option>
+						<md-option value="Vanuatu">Vanuatu</md-option>
+						<md-option value="Venezuela">Venezuela</md-option>
+						<md-option value="Vietnam">Viet Nam</md-option>
+						<md-option value="Virgin Islands (British)">Virgin Islands (British)</md-option>
+						<md-option value="Virgin Islands (U.S)">Virgin Islands (U.S.)</md-option>
+						<md-option value="Wallis and Futana Islands">Wallis and Futuna Islands</md-option>
+						<md-option value="Western Sahara">Western Sahara</md-option>
+						<md-option value="Yemen">Yemen</md-option>
+						<md-option value="Yugoslavia">Yugoslavia</md-option>
+						<md-option value="Zambia">Zambia</md-option>
+						<md-option value="Zimbabwe">Zimbabwe</md-option>
+					</md-select>
+				</md-input-container>
+				<md-input-container style="height:30px">
+					<label>Zip</label>
+					<input required type="text" ng-model="room.site_zip" />
+				</md-input-container>
+			</div>
+			<div layout-gt-xs="row" style="margin-left:15px">
+				<span flex></span>
+				<md-input-container style="height:30px;min-width:125px">
+					<label>Store Open Time</label>
+					<input ng-disabled="room.is247" type="time" ng-model="room.openTime" />
+				</md-input-container>
+				<span flex="5"></span>
+				<md-input-container style="height:30px;min-width:125px">
+					<label>Store Close Time</label>
+					<input ng-disabled="room.is247" type="time" ng-model="room.closeTime" />
+				</md-input-container>
+				<span flex="5"></span>
+				<md-checkbox ng-model="room.is247" class="margin-fix">Store is 24/7</md-checkbox>
+			</div>
+			<div layout="row" style="margin-left:15px;">
+				<md-input-container flex>
+					<label>Activation Notes</label>
+					<textarea ng-model="room.activation_notes" md-maxlength="255" rows="3"></textarea>
+				</md-input-container>
+			</div>
+
+			<br /><br />
+			<div layout="row">
+				<span flex></span>
+				<md-button class="md-raised" ng-click="cancel()">Cancel</md-button>
+				<md-button class="md-raised md-warn" ng-click="fillWithData()" ng-if="permissionLevel == 10">Dummy Data</md-button>
+				<md-button class="md-primary md-raised" ng-click="submit()">Submit</md-button>
+			</div>
+		</div>
+	</div>
+</md-content>

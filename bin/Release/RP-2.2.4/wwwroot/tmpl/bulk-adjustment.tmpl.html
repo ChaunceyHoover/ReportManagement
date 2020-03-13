@@ -1,0 +1,63 @@
+﻿<md-dialog aria-label="Bulk Adjustment" md-colors="{'background-color': 'grey-A100'}">
+	<form ng-cloak>
+		<md-toolbar md-class="md-primary">
+			<div class="md-toolbar-tools" layout="row">
+				<h2>Submit Bulk Adjustments</h2>
+				<span flex></span>
+				<md-button class="md-icon-button" ng-click="close()">
+					<md-icon md-svg-src="close" aria-label="Close"></md-icon>
+				</md-button>
+			</div>
+		</md-toolbar>
+		<md-dialog-content>
+			<div layout-padding>
+				<div layout="row" layout-align="center center">
+					<p hide-xs hide-sm class="md-display-1">Request Adjustment</p>
+					<p class="md-headline" hide show-xs show-sm>Request Adjustment</p>
+				</div>
+				<div layout="row" layout-align="center center">
+					<md-select flex-gt-xs="80" placeholder="Adjustment Type" ng-model="adjustment.type" ng-change="adjustTypeChanged()" style="margin-bottom:0">
+						<md-option ng-repeat="at in adjustmentTypes" ng-value="at.type">{{at.name}}</md-option>
+					</md-select>
+				</div>
+				<div layout="row" style="margin-bottom:26px">
+					<span flex="10"></span>
+					<div class="hint">{{adjustment.type.description}}</div>
+					<span flex="10"></span>
+				</div>
+				<div layout="row">
+					<span flex="5"></span>
+					<div layout="column">
+						<md-checkbox ng-disabled="disableReset" ng-model="adjustment.resetRequest">Full Reset</md-checkbox>
+					</div>
+				</div>
+				<div layout="row" layout-align="center center">
+					<span flex="5"></span>
+					<md-input-container flex>
+						<label>Notes</label>
+						<textarea ng-model="adjustment.notes" rows="3"></textarea>
+					</md-input-container>
+					<span flex="5"></span>
+				</div>
+				<div layout="column" layout-align="center center">
+					<h6 class="no-margin">Restart Time</h6>
+					<div layout-gt-xs="row" layout-xs="column">
+						<div style="margin-top:15px;">
+							<md-datepicker ng-model="adjustment.restartDate"></md-datepicker>
+						</div>
+						<span flex-gt-xs="10"></span>
+						<md-input-container>
+							<label></label>
+							<input type="time" ng-model="adjustment.restartTime" />
+						</md-input-container>
+					</div>
+				</div>
+				<div layout="row">
+					<span flex></span>
+					<md-button class="md-raised" ng-click="close()">Close</md-button>
+					<md-button class="md-primary md-raised" ng-click="submitAdjustment()">Submit</md-button>
+				</div>
+			</div>
+		</md-dialog-content>
+	</form>
+</md-dialog>

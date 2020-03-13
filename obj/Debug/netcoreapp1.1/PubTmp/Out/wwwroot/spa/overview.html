@@ -1,0 +1,119 @@
+<div layout-fill ng-cloak>
+	<md-content layout="row" layout-align="center center" md-colors="::{'background': 'blue-grey-100'}"> <!-- hide-xs -->
+		<!-- Desktop view / larger mobile devices -->
+		<span flex="10"></span>
+
+		<!-- White "card" -->
+		<div layout="column" md-colors="::{'background': 'grey-A100'}" layout-fill flex md-whiteframe="4">
+			<!-- Title -->
+			<div layout-padding layout="row">
+				<span flex></span>
+				<p class="md-display-1">Report Management</p>
+				<span flex></span>
+			</div>
+			<div layout="row">
+				<span flex></span>
+				<!-- Quick reports -->
+				<div layout="column">
+					<span style="text-align: center;" class="md-headline">Quick Reports</span>
+					<div layout="row">
+						<div layout="column">
+							<md-list>
+								<md-list-item ng-click="dummyFunc()">
+									<md-icon class="md-primary md-hue-2" md-svg-icon="date-range"></md-icon>
+									<p>Weekly Report</p>
+								</md-list-item>
+								<md-list-item ng-click="dummyFunc()">
+									<md-icon class="md-primary md-hue-2" md-svg-icon="date-range"></md-icon>
+									<p>Monthly Report</p>
+								</md-list-item>
+							</md-list>
+						</div>
+						<div layout="column">
+							<md-list>
+								<md-list-item ng-click="dummyFunc()">
+									<md-icon class="md-primary md-hue-2" md-svg-icon="date-range"></md-icon>
+									<p>Quarterly Report</p>
+								</md-list-item>
+								<md-list-item ng-click="dummyFunc()">
+									<md-icon class="md-primary md-hue-2" md-svg-icon="date-range"></md-icon>
+									<p>Yearly Report</p>
+								</md-list-item>
+							</md-list>
+						</div>
+					</div>
+				</div>
+				<span flex></span>
+				<!-- Custom Report -->
+				<div layout="column">
+					<span flex class="md-headline" style="text-align: center;">Custom Report</span><br /><br />
+					<div layout="row">
+						<md-input-container style="margin: 18px 0 0 0;">
+							<label>Start Date</label>
+							<md-datepicker md-max-date="filter.dateRange.end" ng-model="filter.dateRange.start"></md-datepicker>
+						</md-input-container>
+						<md-input-container style="margin: 18px 0 0 0;">
+							<label>End Date</label>
+							<md-datepicker md-min-date="filter.dateRange.start" md-max-date="::today" ng-model="filter.dateRange.end"></md-datepicker>
+						</md-input-container>
+					</div>
+					<md-button class="md-primary md-raised">Generate Report</md-button>
+				</div>
+				<span flex></span>
+			</div>
+			<br /><br />
+			<!-- Filters -->
+			<div layout="row">
+				<md-input-container style="margin: 0 18px;">
+					<label>Results per page</label>
+					<md-select ng-model="dummy2">
+						<md-option ng-value="0">25</md-option>
+						<md-option ng-value="1">50</md-option>
+						<md-option ng-value="2">75</md-option>
+						<md-option ng-value="3">100</md-option>
+						<md-option ng-value="4">(All)</md-option>
+					</md-select>
+				</md-input-container>
+				<span flex></span>
+				<md-input-container>
+					<lable>Search</lable>
+					<input type="text" ng-model="searchText" ng-change="searchQueryChanged()" />
+				</md-input-container>
+			</div>
+			<md-divider></md-divider>
+			<!-- Report -->
+			<md-table-container>
+				<table md-table md-row-select ng-model="selected">
+					<thead md-head md-order="name">
+						<tr md-row>
+							<th md-column md-order-by="id">ID</th>
+							<th md-column md-order-by="nameToLower"><span>Distributor</span></th>
+							<th md-column>System</th>
+							<th md-column><span>Name</span></th>
+							<th md-column style="text-align: right;">In</th>
+							<th md-column style="text-align: right;">Out</th>
+							<th md-column style="text-align: right;">Held</th>
+							<th md-column style="text-align: right;">%</th>
+						</tr>
+					</thead>
+					<tbody md-body>
+						<tr md-row md-select="report" ng-if="s.site.siteActive" ng-repeat="s in sites" md-colors="{'background-color': ($index % 2 == 0 ? 'mainTheme-primary-50' : 'grey-A100')}">
+							<td md-cell><a href="/site/{{::s.site.siteId}}">{{::s.site.siteId}}</a></td>
+							<td md-cell>{{::s.site.siteDistributor}}</td>
+							<td md-cell>{{::s.site.systemId}}</td>
+							<td md-cell>{{::s.site.siteName}}</td>
+							<td md-cell style="text-align: right;">{{::s.moneyIn | currency}}</td>
+							<td md-cell style="text-align: right;">{{::s.moneyOut | currency}}</td>
+							<td md-cell style="text-align: right;">{{::s.moneyIn - s.moneyOut | currency}}</td>
+							<td md-cell style="text-align: right;" md-colors="::{'color': getPercentColor((dummy.in - dummy.out) / dummy.in)}">{{::((s.moneyIn - s.moneyOut) / s.moneyIn) | percentage:2}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</md-table-container>
+		</div>
+		<span flex="10"></span>
+	</md-content>
+	<!--<div layout="column" hide show-xs>
+		Smaller device view
+	</div>-->
+</div>

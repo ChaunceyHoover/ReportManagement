@@ -1,0 +1,27 @@
+/* The big colored strip in the background */
+.color-bg {
+	z-index: 1;
+}
+
+/* The "card" in the middle of the page */
+.login-bg {
+	bottom: -50%;
+	height: 55%;
+	background-color: #ffffff !important; /* only need "!important" because material wants to override the background color */
+}
+
+.icon {
+	width: 96px;
+	height: 96px;
+	font-size: 96px;
+	padding-top: 72px;
+	padding-bottom: 24px;
+}
+
+.error-message {
+	color: red;
+}
+
+md-input-container {
+	width: 300px;
+}

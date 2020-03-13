@@ -1,0 +1,61 @@
+<md-content layout-fill ng-cloak>
+	<div layout-padding>
+		<div layout="column" layout-align="center center" flex>
+			<md-icon md-svg-icon="profile" style="width:96px;height:96px;" md-colors="{'color': 'mainTheme-accent-400'}"></md-icon>
+			<h1 class="md-display-1">Account</h1>
+		</div><br />
+		<div layout="row" layout-align="center center" layout-padding flex>
+			<span flex="30"></span>
+			<div layout="column" flex md-colors="{'background-color': 'grey-A100'}" md-whiteframe>
+				<div layout="row" layout-align="center center">
+					<p class="md-headline">Contact Info</p>
+				</div>
+				<div layout="row">
+					<span flex="10"></span>
+					<md-input-container flex>
+						<label>First Name</label>
+						<input type="text" ng-model="account.fname" />
+					</md-input-container>
+					<md-input-container flex>
+						<label>Last Name</label>
+						<input type="text" ng-model="account.lname" />
+					</md-input-container>
+					<span flex="10"></span>
+				</div>
+				<div layout="row">
+					<span flex="10"></span>
+					<md-input-container flex="24">
+						<label>Phone Number</label>
+						<input type="text" phone-input ng-model="account.phoneNumber" />
+					</md-input-container>
+					<md-input-container flex>
+						<label>Email</label>
+						<input type="text" ng-model="account.email" />
+					</md-input-container>
+					<span flex="10"></span>
+				</div>
+				<div layout="row">
+					<span flex></span>
+					<md-button class="md-raised">Change Password</md-button>
+					<md-button class="md-primary md-raised">Save</md-button>
+				</div>
+			</div>
+			<span flex="30"></span>
+		</div>
+	</div>
+</md-content>
+<!-- TODO: Mobile layout -->
+
+<!-- 
+[Key]
+		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+		// Imporant user account info
+		[Column("user_name")]
+		public String Username { get; set; }
+		[Column("user_password")]
+		public String Password { get; set; }
+		[Column("user_level")]
+		public Nullable<Int32> Role { get; set; }
+		[Column("user_enabled")]
+		public bool Enabled { get; set; }
+-->

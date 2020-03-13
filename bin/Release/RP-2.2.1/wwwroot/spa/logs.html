@@ -1,0 +1,68 @@
+﻿<div resize layout-fill layout="row" ng-cloak>
+	<md-content layout="row" flex>
+		<span flex="10"></span>
+		<div layout="column" flex md-whiteframe="4" md-colors="{'background-color': 'grey-A100'}" style="height:fit-content">
+			<div style="margin:24px 0" layout="row" layout-align="center center"><h1 class="md-display-1">Log Viewer</h1></div>
+			<div layout="column" style="min-height:170px">
+				<div layout="row" style="margin-top:24px" flex>
+					<span flex="5"></span>
+					<p class="md-title" style="margin: 10px 10px 0 10px">Between </p>
+					<md-input-container>
+						<label>Start</label>
+						<md-datepicker md-max-date="filter.dateRange.end" ng-model="filter.dateRange.start" ng-change="dateChanged()"></md-datepicker>
+					</md-input-container>
+					<p class="md-title" style="margin: 10px 10px 0 10px"> and </p>
+					<md-input-container>
+						<label>End</label>
+						<md-datepicker md-min-date="filter.dateRange.start" md-max-date="::today" ng-model="filter.dateRange.end" ng-change="dateChanged()"></md-datepicker>
+					</md-input-container>
+					<span flex></span>
+				</div>
+				<div layout="row" flex>
+					<span flex="5"></span>
+					<md-select aria-label="User Filter" style="height:30px" placeholder="User" ng-model="filter.users" ng-change="setTableHeight()" multiple>
+						<md-option ng-repeat="user in request.users" ng-value="user.id">{{user.userName}}</md-option>
+					</md-select>
+					<span flex="5"></span>
+					<md-select aria-label="Action Filter" style="height:30px" placeholder="Action" ng-model="filter.actions" ng-change="setTableHeight()" multiple>
+						<md-option ng-repeat="action in request.actions" ng-value="action.id">{{action.label}}</md-option>
+					</md-select>
+					<span flex></span>
+					<md-input-container>
+						<label>Search</label>
+						<input type="text" ng-model="filter.searchText" />
+					</md-input-container>
+					<span flex="5"></span>
+				</div>
+			</div>
+			<div flex layout="column">
+				<md-data-table-container md-whiteframe id="tableWrapper" style="overflow:auto;">
+					<table data-md-table data-md-row-select="rowSelected" ng-model="selected">
+						<thead md-head data-md-order="query.order">
+							<tr md-row>
+								<th style="padding:0 24px;" md-column md:order:by="logId">Log ID</th>
+								<th md-column md:order:by="userName">Username</th>
+								<th md-column md:order:by="actionName">Action</th>
+								<th md-column md:order:by="description"><span>Description</span></th>
+								<th md-column md:order:by="logTime" style="min-width:75px;">Time</th>
+							</tr>
+						</thead>
+						<tbody id="tableBody" md-body>
+							<tr md-row md-select="viewLog" md-select-id="name" 
+								ng-repeat="log in request.logs | filter: filter.searchText | filterUser: filter.users | filterAction: filter.actions | orderBy: query.order | limitTo: query.limit : (query.page - 1) * query.limit" 
+								md-colors="{'background-color': ($index % 2 == 0 ? '{{theme}}-primary-50' : 'grey-A100')}">
+								<td style="padding:0;" md-cell><md-button ng-click="viewLog(log, $event)" style="padding:0;" class="md-raised md-primary">{{log.logId}}</md-button></td>
+								<td md-cell>{{log.userName}}</td>
+								<td md-cell>{{log.actionName}}</td>
+								<td md-cell style="word-break:break-word;word-wrap:break-word">{{log.description}}</td>
+								<td md-cell style="min-width:75px;">{{log.logTime | date:'short'}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</md-data-table-container>
+				<md-table-pagination md-colors="{'background-color': '{{theme}}-primary'}" style="height:28px; min-height:28px;" md-limit="query.limit" md-limit-options="limitOptions" md-page="query.page" md-total="{{request.logs.length}}" md-page-select="options.pageSelect" md-boundary-links="options.boundaryLinks"></md-table-pagination>
+			</div>
+		</div>
+		<span flex="10"></span>
+	</md-content>
+</div>

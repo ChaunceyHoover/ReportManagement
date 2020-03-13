@@ -1,0 +1,100 @@
+﻿<div layout-fill layout="row" layout-align="center start" md-colors="{'background-color': 'blue-grey-100'}" ng-cloak>
+	<div layout="column" md-colors="{'background-color': 'grey-A100'}" style="height:100%;width:85%" md-whiteframe="4">
+		<div layout="column" layout-padding md-colors="{'background-color': 'grey-200'}">
+			<div layout="row" layout-align="center center">
+				<h1 class="md-display-1">Tickets</h1>
+			</div>
+			<div layout-gt-sm="row" layout-align="start center" style="padding:0">
+				<md-checkbox style="height:24px !important;" ng-disabled="tickets.length <= 0" ng-model="filter.yourTickets">Show only your tickets</md-checkbox>
+				<md-checkbox style="height:24px !important;" ng-disabled="tickets.length <= 0" ng-model="filter.showClosedTickets" ng-change="onlyActivations()">Show closed tickets</md-checkbox>
+				<span hide-sm hide-xs flex></span>
+				<md-input-container>
+					<label>Search</label>
+					<input ng-disabled="tickets.length <= 0" type="text" ng-model="filter.searchText" />
+				</md-input-container>
+			</div>
+			<div layout="row" style="padding:0">
+				<span flex></span>
+				<md-button class="md-primary md-raised" style="margin:0;padding:0;" ng-click="create($event)">Create</md-button>
+			</div>
+		</div>
+		<div ng-repeat="ticket in tickets | filter: filter.searchText | filterShowClosedTickets: filter.showClosedTickets | filterCreatedByYou: filter.yourTickets:userId" md-colors="{'background-color': ($index % 2 == 0 ? '{{theme}}-primary-50' : 'grey-100')}" layout="column" style="margin-top:15px">
+			<div layout="row" style="min-height:144px">
+				<div layout="column" style="padding:8px;width:100%">
+					<h2 class="md-headline" style="padding-bottom:0;margin:0;">{{ticket.subject}}</h2>
+					<a href="/site/{{ticket.siteId}}"><h6 class="md-subhead" style="padding-bottom:0;padding-top:0;margin:0;font-size:12px">{{ticket.siteName}}</h6></a>
+					<h4 class="md-subhead">{{ticket.comments}}</h4>
+				</div>
+				<md-divider></md-divider>
+				<div layout="column" style="padding:8px;width:100%">
+					<div layout="row" style="padding:0;margin:0;">
+						<h4 class="md-headline">Created:</h4>
+						<span flex></span>
+						<h4 class="md-subhead">{{ticket.creator.userName}}</h4>
+					</div>
+					<h5 class="md-subhead" style="font-size:12px;text-align:right;padding:0;">{{ticket.createdDate | date:'short'}}</h5>
+					<div ng-if="ticket.assignedTo > 0 && authUser.level >= 4" layout="row" style="padding:0;margin:0;">
+						<h4 class="md-headline">Assigned to:</h4>
+						<span flex></span>
+						<h4 class="md-subhead">{{ticket.assignee.userName}}</h4>
+					</div>
+					<div ng-if="ticket.assignedTo > 0 && authUser.level < 4" layout="row" style="padding:0;margin:0">
+						<h4 class="md-title">Ticket has been assigned to a technician</h4>
+					</div>
+				</div>
+				<md-divider></md-divider>
+				<div layout="row" style="padding;width:100%">
+					<div layout="column" style="margin-left:8px">
+						<h4 style="margin-bottom:0" class="md-subhead">Status:</h4>
+						<span style="margin-left:8px;font-size:16px" class="md-title" ng-style="{'color': getStatusColor(ticket)}">{{ticket.statusName}}</span>
+						<h4 ng-if="ticket.status != 4" style="margin-bottom:0" class="md-subhead">Priority:</h4>
+						<span ng-if="ticket.status != 4" style="margin-left:8px;font-size:16px" class="md-title" ng-style="{'color': getPriorityColor(ticket)}">{{ticket.priorityName}}</span>
+						<h4 style="margin-bottom:0" class="md-subhead">Category:</h4>
+						<span style="margin-left:8px;font-size:16px" class="md-title" ng-style="{'color': getCategoryColor(ticket)}">{{ticket.categoryName}}</span>
+					</div>
+					<span flex></span>
+					<div layout="column" layout-align="center center">
+						<div class="pseudo-input" style="margin:0" layout="column" ng-if="ticket.dueDate">
+							<p ng-style="{'color': ticket.dueDate < now && ticket.status != 4 ? 'rgba(255, 0, 0, 255)' : 'rgba(0, 0, 0, 255)'}">Due Date</p>
+							<p ng-style="{'color': ticket.dueDate < now && ticket.status != 4 ? 'rgba(255, 0, 0, 255)' : 'rgba(0, 0, 0, 255)'}">{{ticket.dueDate | date:'M/d/yy'}}</p>
+						</div>
+						<div class="pseudo-input" style="margin:0" layout="column" ng-if="ticket.lastUpdated">
+							<p>Last Updated</p>
+							<p>{{ticket.lastUpdated | date:'short'}}</p>
+						</div>
+						<div layout="row">
+							<md-button class="md-raised" ng-click="update(ticket, $event)">Edit</md-button>
+							<md-button class="md-raised md-warn" ng-click="delete(ticket, $event)">Delete</md-button>
+						</div>
+					</div>
+					<span flex="5"></span>
+				</div>
+			</div>
+			<md-divider></md-divider>
+			<div layout="column">
+				<div ng-if="ticket.showComments" ng-repeat="comment in ticket.ticketComments" layout="column" style="padding:4px">
+					<div layout="row">
+						<h3 class="md-title" style="margin:0;">{{comment.poster.userName}}</h3>
+						<h6 class="md-subhead" style="margin-left:1em">{{commment.time | date:'short'}}</h6>
+					</div>
+					<p style="margin:0;">{{comment.comment}}</p>
+				</div>
+				<div ng-if="ticket.showComments" layout="column">
+					<md-input-container>
+						<label>Comment</label>
+						<textarea style="width:100%;" rows="3" ng-model="newComment.comment" ng-focus="setCommentId(ticket.id)"></textarea>
+					</md-input-container>
+				</div>
+				<div ng-if="ticket.showComments" layout="row">
+					<span flex></span>
+					<md-button class="md-raised" ng-click="submitComment()">Submit</md-button>
+				</div>
+				<div layout="row">
+					<span flex></span>
+					<a href="#" ng-click="showComments(ticket)">{{ticket.ticketComments.length > 0 ? (ticket.showComments ? 'Hide' : 'Show') + ' comments (' + ticket.ticketComments.length + ')' : 'Comment'}}</a>
+					<span flex="5"></span>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

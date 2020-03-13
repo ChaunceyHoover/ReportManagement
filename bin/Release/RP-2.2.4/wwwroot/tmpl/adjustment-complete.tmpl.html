@@ -1,0 +1,40 @@
+﻿<md-dialog aria-label="Adjustment Completion" md-colors="{'background-color': 'grey-A100'}">
+	<form ng-cloak>
+		<md-toolbar md-class="md-primary">
+			<div class="md-toolbar-tools" layout="row">
+				<h2>Completed Adjustment</h2>
+				<span flex></span>
+				<md-button class="md-icon-button" ng-click="close()">
+					<md-icon md-svg-src="close" aria-label="Close"></md-icon>
+				</md-button>
+			</div>
+		</md-toolbar>
+		<md-dialog-content>
+			<div layout-padding class="md-dialog-content">
+				<div layout="column">
+					<div class="pseudo-input" layout="column">
+						<p>Time Ran</p>
+						<p>{{adjustment.timeRan | date:'short'}}</p>
+					</div>
+					<div class="pseudo-input" layout="column">
+						<p>Restart Time</p>
+						<p>{{adjustment.restartTime | date:'short'}}</p>
+					</div>
+					<div class="pseudo-input" layout="column">
+						<p>IP</p>
+						<p>{{adjustment.ip}}</p>
+					</div>
+					<md-checkbox disabled ng-value="adjustment.resetRequest">Full Reset</md-checkbox>
+					<div class="pseudo-input" layout="column">
+						<p>Notes</p>
+						<p>{{adjustment.notes}}</p>
+					</div>
+				</div>
+				<div layout="row" flex>
+					<span flex></span>
+					<md-button class="md-raised" ng-click="close()">Close</md-button>
+				</div>
+			</div>
+		</md-dialog-content>
+	</form>
+</md-dialog>

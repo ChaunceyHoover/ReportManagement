@@ -1,0 +1,34 @@
+﻿<md-dialog aria-label="Adjustment Claim" md-colors="{'background-color': 'grey-A100'}">
+	<form ng-cloak>
+		<md-toolbar md-class="md-primary">
+			<div class="md-toolbar-tools" layout="row">
+				<h2>Adjustment Claim</h2>
+				<span flex></span>
+				<md-button class="md-icon-button" ng-click="close()">
+					<md-icon md-svg-src="close" aria-label="Close"></md-icon>
+				</md-button>
+			</div>
+		</md-toolbar>
+		<md-dialog-content>
+			<div layout-padding class="md-dialog-content">
+				<p md-colors="{'color': '{{theme}}-warn'}">{{errorMessage}}</p>
+				<div layout="column" class="pseudo-input" style="padding:0;max-width:300px;overflow-x:scroll;margin-bottom:0;" flex>
+					<p>Secret Code (triple click)</p>
+					<p id="adjustmentCode">{{adjustment.code}}</p>
+				</div>
+				<p class="hint" ng-if="adjustment.expireTime != null">Code expires in 5 minutes (after {{adjustment.expireTime | date:'h:mm a'}})</p>
+				<div layout="row" style="padding:0;" layout-align="center center">
+					<md-input-container flex>
+						<label>Verification Code</label>
+						<input type="text" ng-model="adjustment.verification" />
+					</md-input-container>
+				</div>
+				<div layout="row" flex>
+					<span flex></span>
+					<md-button class="md-raised" ng-click="close()">Close</md-button>
+					<md-button class="md-raised md-primary" ng-click="submitAdjustment()">Submit</md-button>
+				</div>
+			</div>
+		</md-dialog-content>
+	</form>
+</md-dialog>

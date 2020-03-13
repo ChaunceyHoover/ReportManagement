@@ -1,0 +1,48 @@
+﻿<div resize layout-fill ng-cloak md-colors="{'background-color': 'blue-grey-100'}" layout="row" layout-align="center start" style="height:fit-content;padding-bottom:15px;">
+	<div layout="column" md-whiteframe="4" flex="70" md-colors="{'background-color': 'grey-A100'}" style="margin-top:15px;">
+		<!-- Title -->
+		<div layout="row" layout-align="center center" style="margin-top:15px;">
+			<h1 class="md-display-1">Adjustments</h1>
+		</div>
+		<!-- Search -->
+		<div layout="row">
+			<span flex="5"></span>
+			<md-checkbox ng-model="filter.completed" style="margin-top:24px;max-height:26px;">Hide Completed</md-checkbox>
+			<md-checkbox ng-model="filter.claimed" style="margin-top:24px;max-height:26px;">Hide Claimed</md-checkbox>
+			<span flex></span>
+			<md-input-container>
+				<label>Search</label>
+				<input type="text" ng-model="filter.searchText" />
+			</md-input-container>
+			<span flex="5"></span>
+		</div>
+		<!-- Table -->
+		<md-data-table-container style="overflow:auto;">
+			<table md-table md-row-select="rowSelected" ng-model="selected">
+				<thead md-head md-order="query.order">
+					<tr md-row>
+						<th md-column md:order:by="submissionDate">Submission Date</th>
+						<th md-column md:order:by="systemName">System</th>
+						<th md-column md:order:by="siteName">Site Name</th>
+						<th md-column md:order:by="submittedBy">Submitted By</th>
+						<th md-column md:order:by="adjustmentType">Type</th>
+						<th md-column md:order:by="claimedById">Claimed</th>
+						<th md-column md:order:by="completed">Completed</th>
+					</tr>
+				</thead>
+				<tbody id="adjustmentBody" md-body>
+					<tr md-row ng-repeat="adjustment in adjustments | filter: filter.searchText | orderBy: query.order | filterCompleted: filter.completed | filterClaimed: filter.claimed"
+						md-colors="{'background-color': ($index % 2 == 0 ? '{{theme}}-primary-50' : 'grey-A100')}" ng-click="rowClicked(adjustment, $event)">
+						<td md-cell>{{adjustment.submissionDate | date:'short'}}</td>
+						<td md-cell>{{adjustment.systemName}}</td>
+						<td md-cell>{{adjustment.siteName}}</td>
+						<td md-cell>{{adjustment.submittedBy}}</td>
+						<td md-cell>{{adjustment.adjustmentType}}</td>
+						<td md-cell>{{adjustment.claimedById > 0 ? adjustment.claimedByName : "(not claimed)"}}</td>
+						<td md-cell>{{adjustment.completed ? 'Yes' : 'No'}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</md-data-table-container>
+	</div>
+</div>

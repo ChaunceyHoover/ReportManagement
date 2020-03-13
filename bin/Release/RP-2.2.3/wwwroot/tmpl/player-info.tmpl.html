@@ -1,0 +1,96 @@
+﻿<md-dialog aria-label="Adjustment Completion" md-colors="{'background-color': 'grey-A100'}">
+	<form ng-cloak>
+		<md-toolbar md-class="md-primary">
+			<div class="md-toolbar-tools" layout="row">
+				<h2>Player Info</h2>
+				<span flex></span>
+				<md-button class="md-icon-button" ng-click="close()">
+					<md-icon md-svg-src="close" aria-label="Close"></md-icon>
+				</md-button>
+			</div>
+		</md-toolbar>
+		<md-dialog-content>
+			<div layout-padding class="md-dialog-content">
+				<div layout="row">
+					<md-input-container class="no-margin">
+						<label>ID</label>
+						<input type="number" ng-disabled="true" ng-model="player.cardId" />
+					</md-input-container>
+					<span flex="5"></span>
+					<md-input-container class="no-margin">
+						<label>Card #</label>
+						<input ng-disabled="true" ng-model="player.personalId" />
+					</md-input-container>
+				</div>
+				<div layout="row">
+					<div layout="column" class="pseudo-input no-margin" flex>
+						<p>First Name</p>
+						<p>{{player.firstName}}</p>
+					</div>
+					<span flex="5"></span>
+					<div layout="column" class="pseudo-input no-margin" flex>
+						<p>Last Name</p>
+						<p>{{player.lastName}}</p>
+					</div>
+					<span flex="5"></span>
+					<div layout="column" class="pseudo-input no-margin" flex>
+						<p>Gender</p>
+						<p>{{player.gender ? 'Male' : 'Female'}}</p>
+					</div>
+				</div>
+				<div layout="row">
+					<div layout="column" class="pseudo-input" flex>
+						<p>City</p>
+						<p>{{player.city}}</p>
+					</div>
+					<div layout="column" class="pseudo-input" flex>
+						<p>State</p>
+						<p>{{player.state}}</p>
+					</div>
+					<span flex="5"></span>
+					<div layout="column" class="pseudo-input">
+						<p>Zip</p>
+						<p>{{player.zip}}</p>
+					</div>
+				</div>
+				<div layout="row">
+					<div layout="column" class="pseudo-input" flex>
+						<p>Phone</p>
+						<p>{{player.phone}}</p>
+					</div>
+					<span flex="5"></span>
+					<div layout="column" class="pseudo-input" flex>
+						<p>Email</p>
+						<p>{{player.email}}</p>
+					</div>
+					<span flex="5"></span>
+					<div layout="column" class="pseudo-input" flex>
+						<p>Birthday</p>
+						<p>{{player.birthday | date:'MM/dd/yyyy'}}</p>
+					</div>
+				</div>
+				<div layout="row">
+					<div layout="column" class="pseudo-input" flex>
+						<p>Cashable Balance</p>
+						<p>{{player.cashableBalance | currency}}</p>
+					</div>
+					<span flex="5"></span>
+					<div layout="column" class="pseudo-input" flex>
+						<p>Playable Balance</p>
+						<p>{{player.playableBalance | currency}}</p>
+					</div>
+				</div>
+				<div layout="row" ng-if="player.notes">
+					<div layout="column" class="pseudo-input" flex>
+						<p>Notes</p>
+						<p>{{player.notes}}</p>
+					</div>
+				</div>
+				<div layout="row" flex>
+					<span flex></span>
+					<md-button class="md-raised" ng-click="close()">Close</md-button>
+				</div>
+			</div>
+		</md-dialog-content>
+	</form>
+</md-dialog>

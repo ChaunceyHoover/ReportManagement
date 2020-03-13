@@ -1,0 +1,31 @@
+﻿<md-dialog aria-label="Bulk Adjustment" md-colors="{'background-color': 'grey-A100'}">
+	<form ng-cloak>
+		<md-toolbar md-class="md-primary">
+			<div class="md-toolbar-tools" layout="row">
+				<h2>Bulk Set Distributors</h2>
+				<span flex></span>
+				<md-button class="md-icon-button" ng-click="close()">
+					<md-icon md-svg-src="close" aria-label="Close"></md-icon>
+				</md-button>
+			</div>
+		</md-toolbar>
+		<md-dialog-content>
+			<div layout-padding>
+				<div layout="row" layout-align="center center">
+					<p hide-xs hide-sm class="md-display-1">Set Sites' Distributor</p>
+					<p class="md-headline" hide show-xs show-sm>Set Sites' Distributor</p>
+				</div>
+				<div layout="row" layout-align="center center">
+					<md-select ng-model="site.distribId">
+						<md-option ng-repeat="d in distributors" ng-value="d.id">{{d.name}}</md-option>
+					</md-select>
+				</div>
+				<div layout="row">
+					<span flex></span>
+					<md-button class="md-raised" ng-click="close()">Close</md-button>
+					<md-button class="md-primary md-raised" ng-click="submit()">Submit</md-button>
+				</div>
+			</div>
+		</md-dialog-content>
+	</form>
+</md-dialog>

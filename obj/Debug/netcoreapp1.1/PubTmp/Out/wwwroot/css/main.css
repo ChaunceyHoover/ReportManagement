@@ -1,0 +1,26 @@
+.navbar {
+	height: 48px;
+	min-height: 48px;
+}
+
+.navbar div {
+	height: 48px;
+}
+
+footer {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	height: 40px;
+}
+
+footer md-select {
+	margin: 0 0 0 100px;
+	width: 150px;
+}
+
+/* Quick fix classes */
+.hidden-overflow {
+	overflow: hidden;
+}

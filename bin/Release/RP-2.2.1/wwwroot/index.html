@@ -1,0 +1,194 @@
+﻿<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<!-- Disable caching -->
+	<meta http-equiv='cache-control' content='no-cache'>
+	<meta http-equiv='expires' content='0'>
+	<meta http-equiv='pragma' content='no-cache'>
+
+	<base href="/">
+	<title>Report Portal</title>
+
+	<!-- Library CSS files -->
+	<link rel="stylesheet" href="css/angular-material.min.css" type="text/css" />
+	<link rel="stylesheet" href="css/angular-material-badge.min.css" type="text/css" />
+	<link rel="stylesheet" href="css/loading-bar.min.css" type="text/css" />
+	<link rel="stylesheet" href="css/md-data-table.min.css" type="text/css" />
+	<link rel="stylesheet" href="css/mdPickers.min.css" type="text/css" />
+	<link rel="stylesheet" href="css/jquery.timepicker.min.css" type="text/css" />
+	<link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" />
+	<link rel="stylesheet" href="css/bootstrap-timepicker.min.css" type="text/css" />
+
+	<!-- Custom CSS file -->
+	<link rel="stylesheet" href="css/main.css" type="text/css" />
+</head>
+<body ng-app="ReportManager" ng-controller="IndexCtrl as ctrl" md-theme="{{theme}}" ng-cloak>
+	<!-- Left & Right sidenavs -->
+	<section layout="row" ng-cloak flex>
+		<!-- Left -->
+		<md-sidenav class="md-sidenav-left"
+					md-component-id="left" md-whiteframe="4"
+					layout-fill>
+			<md-toolbar>
+			</md-toolbar>
+			<md-content>
+				<md-list>
+					<md-subheader>Overview</md-subheader>
+					<md-list-item ng-click="::changeSPA(0)">
+						<md-icon class="md-primary" md-svg-icon="home"></md-icon>
+						<p>Home</p>
+					</md-list-item>
+					<md-list-item ng-click="::changeSPA(8)" ng-if="canDoAdjustments || permissionLevel == 10">
+						<md-icon class="md-primary md-hue-3" md-svg-icon="money"></md-icon>
+						<p>Adjustments</p>
+					</md-list-item>
+					<md-list-item ng-click="changeSPA(10)">
+						<md-icon class="md-primary md-hue-3" md-svg-icon="ticket"></md-icon>
+						<p>Tickets</p>
+					</md-list-item>
+					<div ng-if="canCreateUser || canEditUser || permissionLevel == 10">
+						<md-divider></md-divider>
+						<md-subheader>User Management</md-subheader>
+						<md-list-item ng-if="canCreateUser || permissionLevel == 10" ng-click="::changeSPA(1, $event)">
+							<md-icon class="md-primary md-hue-3" md-svg-icon="add"></md-icon>
+							<p>Add User</p>
+						</md-list-item>
+						<md-list-item ng-if="canEditUser || permissionLevel == 10" ng-click="::changeSPA(2)">
+							<md-icon class="md-primary md-hue-3" md-svg-icon="edit"></md-icon>
+							<p>Modify User</p>
+						</md-list-item>
+					</div>
+					<div ng-if="canCreateSite || permissionLevel == 10">
+						<md-divider></md-divider>
+						<md-subheader>Site Management</md-subheader>
+						<md-list-item ng-click="changeSPA(5)">
+							<md-icon class="md-primary md-hue-3" md-svg-icon="site"></md-icon>
+							<p>Activate Site</p>
+						</md-list-item>
+						<md-list-item ng-click="changeSPA(6)">
+							<md-icon class="md-primary md-hue-3" md-svg-icon="disabled"></md-icon>
+							<p>Disabled Sites</p>
+						</md-list-item>
+					</div>
+					<md-divider></md-divider>
+					<div ng-if="permissionLevel == 5 || permissionLevel == 9 || permissionLevel == 10">
+						<md-subheader>Tech Links</md-subheader>
+						<md-list-item ng-click="changeSPA(7)">
+							<md-icon class="md-primary md-hue-3" md-svg-icon="log"></md-icon>
+							<p>Logs</p>
+						</md-list-item>
+					</div>
+					<md-subheader>Links</md-subheader>
+					<a ng-if="checkLinkPermission(link) || permissionLevel == 10" class="dynamic-link" style="text-decoration:none" ng-repeat="link in sidenavLinks" href="{{link.url}}">
+						<md-list-item ng-click="::changeSPA(3)">
+							<md-icon class="md-primary md-hue-3" md-svg-icon="exit"></md-icon>
+							<p>{{link.label}}</p>
+						</md-list-item>
+					</a>
+				</md-list>
+			</md-content>
+		</md-sidenav>
+		
+		<!-- Right -->
+		<md-sidenav class="md-sidenav-right"
+					md-component-id="right" md-whiteframe="4"
+					layout-fill>
+			<md-toolbar>
+			</md-toolbar>
+			<md-content>
+				<md-subheader>Settings</md-subheader>
+				<md-list>
+					<md-list-item ng-click="::changeSPA(4)">
+						<md-icon class="md-primary" md-svg-icon="profile"></md-icon>
+						<p>Account</p>
+					</md-list-item>
+					<md-list-item ng-if="mobileCheck()" ng-click="forceDesktopView()">
+						<md-icon class="md-primary" md-svg-icon="desktop"></md-icon>
+						<p>{{desktopView ? 'Mobile' : 'Desktop'}} View</p>
+					</md-list-item>
+					<md-list-item ng-click="::logout()">
+						<md-icon class="md-primary" md-svg-icon="logout"></md-icon>
+						<p>Logout</p>
+					</md-list-item>
+				</md-list>
+			</md-content>
+		</md-sidenav>
+	</section>
+
+	<div style="min-height:calc(100% - 48px); height:calc(100% - 48px)" layout-fill>
+		<!-- Navbar -->
+		<md-toolbar class="navbar">
+			<div class="md-toolbar-tools" layout="row">
+				<md-button ng-click="::toggleLeft()" class="md-icon-button" aria-label="AppSettings">
+					<md-icon class="md-primary" md-svg-icon="list"></md-icon>
+				</md-button>
+				<span flex></span>
+				<p ng-if="supportNumber.length > 0" style="margin-bottom:0;">Support #: {{supportNumber}}</p>
+				<md-menu md-position-mode="target-right target" ng-if="adjustments.length > 0 || activations.length > 0 || playerAdjustments.length > 0 || tickets.length > 0">
+					<md-button md-badge="{{adjustments.length + activations.length + playerAdjustments.length + tickets.length}}" class="md-icon-button" aria-label="Approvals" ng-click="ctrl.openMenu($mdOpenMenu, $event)">
+						<md-icon class="md-primary  material-icons mdl-badge" md-svg-icon="approval"></md-icon>
+					</md-button>
+					<md-menu-content width="4">
+						<md-menu-item ng-if="adjustments.length > 0">
+							<md-button md-colors="{'color': 'grey-900'}" ng-click="openNotifications()">
+								<md-icon md-colors="{'color': 'grey-900'}" md-svg-src="money" md-menu-align-target></md-icon>
+								<p>({{adjustments.length}}) pending server adjustment{{adjustments.length > 1 ? 's' : ''}}</p>
+							</md-button>
+						</md-menu-item>
+						<md-menu-item ng-if="playerAdjustments.length > 0">
+							<md-button md-colors="{'color': 'grey-900'}" ng-click="openNotifications()">
+								<md-icon md-colors="{'color': 'grey-900'}" md-svg-src="money" md-menu-align-target></md-icon>
+								<p>({{playerAdjustments.length}}) pending player adjustment{{playerAdjustments.length > 1 ? 's' : ''}}</p>
+							</md-button>
+						</md-menu-item>
+						<md-menu-item ng-if="activations.length > 0">
+							<md-button md-colors="{'color': 'grey-900'}" ng-click="openNotifications()">
+								<md-icon md-colors="{'color': 'grey-900'}" md-svg-src="warning" md-menu-align-target></md-icon>
+								<p>({{activations.length}}) unapproved activation{{activations.length > 1 ? 's' : ''}}</p>
+							</md-button>
+						</md-menu-item>
+						<md-menu-item ng-if="tickets.length > 0">
+							<md-button md-colors="{'color': 'grey-900'}" ng-click="openTickets()">
+								<md-icon md-colors="{'color': 'grey-900'}" md-svg-src="ticket" md-menu-align-target></md-icon>
+								<p>({{tickets.length}}) open ticket{{tickets.length > 1 ? 's' : ''}}</p>
+							</md-button>
+						</md-menu-item>
+					</md-menu-content>
+				</md-menu>
+				<md-button ng-click="::toggleRight()" class="md-icon-button" aria-label="UserSettings">
+					<md-icon class="md-primary" md-svg-icon="settings"></md-icon>
+				</md-button>
+			</div>
+		</md-toolbar>
+		<!-- Dynamic content -->
+		<ng-view></ng-view>
+	</div>
+
+	<!-- Libraries -->
+	<script type="text/javascript" src="js/angular.min.js"></script>
+	<script type="text/javascript" src="js/angular-route.min.js"></script>
+	<script type="text/javascript" src="js/angular-animate.min.js"></script>
+	<script type="text/javascript" src="js/angular-aria.min.js"></script>
+	<script type="text/javascript" src="js/angular-messages.min.js"></script>
+	<script type="text/javascript" src="js/angular-cookies.min.js"></script>
+	<script type="text/javascript" src="js/angular-material1.1.5.min.js"></script>
+	<script type="text/javascript" src="js/angular-material-badge.min.js"></script>
+	<script type="text/javascript" src="js/loading-bar.min.js"></script>
+	<script type="text/javascript" src="js/md-data-table.min.js"></script>
+	<script type="text/javascript" src="js/moment.min.js"></script>
+	<script type="text/javascript" src="js/mdPickers.min.js"></script>
+	<script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+	<script type="text/javascript" src="js/jquery.timepicker.min.js"></script>
+	<script type="text/javascript" src="js/modernizr.min.js"></script>
+	<script type="text/javascript" src="js/date.js"></script>
+	<script type="text/javascript" src="js/Blob.js"></script>
+	<script type="text/javascript" src="js/FileSaver.min.js"></script>
+	<script type="text/javascript" src="js/guid.js"></script>
+
+	<!-- My App - load last -->
+	<script type="text/javascript" src="js/app.js"></script>
+</body>
+</html>

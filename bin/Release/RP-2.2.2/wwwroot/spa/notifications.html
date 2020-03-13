@@ -1,0 +1,32 @@
+<div id="notification-wrapper" layout-fill ng-cloak layout="column" layout-align="start center" md-colors="{'background-color': 'blue-grey-100'}">
+	<div class="notifications-toolbar" layout="column" md-colors="{'background-color': 'grey-200'}" md-whiteframe="4">
+		<div layout="row" layout-align="center center">
+			<h1 class="md-display-1">Notifications</h1>
+		</div>
+		<div layout-gt-sm="row" layout-align="start center">
+			<md-checkbox style="height:24px !important;" ng-disabled="notifications.length <= 0" ng-model="filter.yourNotifications">Only your notifications</md-checkbox>
+			<md-checkbox style="height:24px !important;" ng-disabled="notifications.length <= 0" ng-model="filter.adjustments" ng-change="onlyAdjustments()">Only adjustments</md-checkbox>
+			<md-checkbox style="height:24px !important;" ng-disabled="notifications.length <= 0" ng-model="filter.activations" ng-change="onlyActivations()">Only activations</md-checkbox>
+			<span hide-sm hide-xs flex></span>
+			<md-input-container>
+				<label>Search</label>
+				<input ng-disabled="notifications.length <= 0" type="text" ng-model="filter.searchText" />
+			</md-input-container>
+		</div>
+	</div>
+	<div layout="column" ng-if="notifications.length > 0" md-whiteframe="4" style="margin-bottom:30px" md-colors="{'background-color': 'grey-A100'}">
+		<!-- add padding to mobile (via ng-style) -->
+		<div class="notification" ng-repeat="n in notifications | filter: filter.searchText | filterYourNotifications: (filter.yourNotifications ? authUser : null) | filterNotificationType: filter.notificationType" layout="row" layout-align="center center" ng-click="notificationClicked(n)"
+			 md-colors="{'background-color': $index % 2 == 0 ? 'grey-A100' : '{{theme}}-primary-50', 'border-left-color': '{{theme}}-primary-A200'}"
+			 ng-style="{'border-left': (n.claimedById == authUser ? '5px solid red' : '')}">
+			<md-icon style="height:36px;width:36px;font-size:36px;" md-svg-src="{{n.notificationType == 0 ? 'warning' : 'money'}}"></md-icon>
+			<div flex layout="column">
+				<p class="md-title">{{getNotificationTitle(n)}}</p>
+				<p>{{getNotificationDescription(n)}}</p>
+			</div>
+		</div>
+	</div>
+	<div layout="column" layout-align="center center" ng-if="notifications.length <= 0" md-whiteframe="4" style="margin-bottom:30px" md-colors="{'background-color': 'grey-A100'}">
+		<h1 style="padding:36px" class="md-display-1">No new notifications.</h1>
+	</div>
+</div>

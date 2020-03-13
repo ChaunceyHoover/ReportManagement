@@ -1,0 +1,92 @@
+﻿<md-dialog aria-label="Ticket" md-colors="{'background-color': 'grey-A100'}">
+	<form ng-cloak>
+		<md-toolbar md-class="md-primary">
+			<div class="md-toolbar-tools" layout="row">
+				<h2>View Ticket</h2>
+				<span flex></span>
+				<md-button class="md-icon-button" ng-click="close()">
+					<md-icon md-svg-src="close" aria-label="Close"></md-icon>
+				</md-button>
+			</div>
+		</md-toolbar>
+		<md-dialog-content style="margin-top:15px;" layout-padding>
+			<p ng-if="errorMsg" md-colors="{'color': 'red'}">{{errorMsg}}</p>
+			<div layout="row" layout-align="center center">
+				<md-input-container style="margin:0" flex>
+					<label>Subject</label>
+					<input required type="text" ng-model="ticket.subject" />
+				</md-input-container>
+			</div>
+			<div layout="row">
+				<md-input-container style="margin:0" layout-align="center center" flex>
+					<label>Comments</label>
+					<textarea style="min-width:300px" required rows="3" maxlength="255" ng-model="ticket.comments"></textarea>
+				</md-input-container>
+			</div>
+			<div layout="row">
+				<md-input-container style="margin:0" flex>
+					<label>Site</label>
+					<md-select required ng-model="ticket.siteId">
+						<md-option ng-repeat="site in sites" ng-value="{{site.id}}">{{site.siteName}}</md-option>
+					</md-select>
+				</md-input-container>
+			</div>
+			<div layout="row">
+				<md-input-container style="margin:0" flex>
+					<label>Priority</label>
+					<md-select required ng-model="ticket.priority">
+						<md-option ng-value="0">Low</md-option>
+						<md-option ng-value="1">Medium</md-option>
+						<md-option ng-value="2">High</md-option>
+						<md-option ng-value="3">Very High</md-option>
+					</md-select>
+				</md-input-container>
+				<md-input-container ng-if="authUser.level >= 4" style="margin:0" flex>
+					<label>Assign To</label>
+					<md-select ng-model="ticket.assignedTo">
+						<md-option ng-repeat="user in ticketAssignees" ng-value="user.id">{{user.userName}}</md-option>
+					</md-select>
+				</md-input-container>
+			</div>
+			<div layout="row">
+				<md-input-container style="margin:0" flex>
+					<label>Category</label>
+					<md-select required ng-model="ticket.category">
+						<md-option ng-value="0">Hardware</md-option>
+						<md-option ng-value="1">Software</md-option>
+						<md-option ng-value="2">Network</md-option>
+						<md-option ng-value="3">Reversal</md-option>
+						<md-option ng-value="4">Manual Adjustment</md-option>
+						<md-option ng-value="5">Report Portal</md-option>
+						<md-option ng-value="6">Activation</md-option>
+					</md-select>
+				</md-input-container>
+				<md-input-container style="margin:0" flex>
+					<label>Status</label>
+					<md-select required ng-model="ticket.status">
+						<md-option ng-value="0">New</md-option>
+						<md-option ng-value="1">Open</md-option>
+						<md-option ng-value="2">Awaiting</md-option>
+						<md-option ng-value="3">In Progress</md-option>
+						<md-option ng-value="4">Closed</md-option>
+					</md-select>
+				</md-input-container>
+			</div>
+			<div layout="row">
+				<md-input-container ng-if="ticket.hasDueDate">
+					<label>End Date</label>
+					<md-datepicker ng-model="ticket.dueDate"></md-datepicker>
+				</md-input-container>
+				<span flex></span>
+				<md-checkbox style="height:28px;margin-top:24px;" ng-model="ticket.hasDueDate">Due Date{{ ticket.hasDueDate ? '' : '?' }}</md-checkbox>
+			</div>
+			<div style="padding:0;" layout-padding class="md-dialog-content">
+				<div layout="row" flex>
+					<span flex></span>
+					<md-button class="md-raised" ng-click="close()">Close</md-button>
+					<md-button class="md-primary md-raised" ng-click="button()">{{submitButton}}</md-button>
+				</div>
+			</div>
+		</md-dialog-content>
+	</form>
+</md-dialog>

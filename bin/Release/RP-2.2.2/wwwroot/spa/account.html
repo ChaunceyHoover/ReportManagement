@@ -1,0 +1,91 @@
+<md-content layout-fill ng-cloak>
+	<br /><div layout="column" layout-align="center center" flex>
+		<md-icon md-svg-icon="profile" style="width:96px;height:96px;" md-colors="{'color': '{{theme}}-primary-600'}"></md-icon>
+		<h1 class="md-display-1">Account</h1>
+	</div><br />
+	<div layout-padding hide-xs>
+		<div layout="row" layout-align="center center" layout-padding flex>
+			<span flex="30"></span>
+			<div layout="column" flex md-colors="{'background-color': 'grey-A100'}" md-whiteframe>
+				<div layout="row" layout-align="center center">
+					<p class="md-headline">Contact Info</p>
+				</div>
+				<div layout="row">
+					<span flex="10"></span>
+					<md-input-container flex>
+						<label>First Name</label>
+						<input type="text" ng-model="account.fName" />
+					</md-input-container>
+					<md-input-container flex>
+						<label>Last Name</label>
+						<input type="text" ng-model="account.lName" />
+					</md-input-container>
+					<span flex="10"></span>
+				</div>
+				<div layout="row">
+					<span flex="10"></span>
+					<md-input-container flex="24">
+						<label>Phone Number</label>
+						<input type="text" phone-input ng-model="account.phone" />
+					</md-input-container>
+					<md-input-container flex>
+						<label>Email</label>
+						<input type="text" ng-model="account.email" />
+					</md-input-container>
+					<span flex="10"></span>
+				</div>
+				<div layout="row">
+					<span flex></span>
+					<md-button class="md-raised" ng-click="changePwd($event)">Change Password</md-button>
+					<md-button class="md-primary md-raised" ng-click="saveInfo()">Save</md-button>
+				</div>
+			</div>
+			<span flex="30"></span>
+		</div>
+	</div>
+	<div style="margin-top: 200px;" layout="column" layout-align="center center" flex hide show-xs>
+		<div layout="row" layout-align="center center" layout-padding flex>
+			<span flex="5"></span>
+			<div layout="column" flex md-colors="{'background-color': 'grey-A100'}" md-whiteframe>
+				<div layout="row" layout-align="center center">
+					<p class="md-headline">Contact Info</p>
+				</div>
+				<div layout="row">
+					<span flex="10"></span>
+					<md-input-container flex>
+						<label>First Name</label>
+						<input type="text" ng-model="account.fName" />
+					</md-input-container>
+					<md-input-container flex>
+						<label>Last Name</label>
+						<input type="text" ng-model="account.lName" />
+					</md-input-container>
+					<span flex="10"></span>
+				</div>
+				<div layout="row">
+					<span flex="10"></span>
+					<md-input-container flex>
+						<label>Phone Number</label>
+						<input type="text" phone-input ng-model="account.phone" />
+					</md-input-container>
+					<span flex="10"></span>
+				</div>
+				<div layout="row">
+					<span flex="10"></span>
+					<md-input-container flex>
+						<label>Email</label>
+						<input type="text" ng-model="account.email" />
+					</md-input-container>
+					<span flex="10"></span>
+				</div>
+				<div layout="row">
+					<span flex></span>
+					<md-button class="md-raised" ng-click="changePwd($event)">Change Password</md-button>
+					<md-button class="md-primary md-raised" ng-click="saveInfo()">Save</md-button>
+				</div>
+			</div>
+			<span flex="5"></span>
+		</div>
+	</div>
+</md-content>
+<!-- TODO: Mobile layout -->

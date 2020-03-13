@@ -1,0 +1,49 @@
+﻿th, td, .title_text {
+	font-family: 'Roboto', sans-serif;
+}
+th {
+	font-size: 12px;
+	padding: 15px 5px 5px 5px;
+}
+td {
+	font-size: 12px;
+	padding: 5px;
+}
+
+.title_container {
+	width: 100%;
+}
+.title_text {
+	text-align: center;
+	font-size: 36px;
+	margin-bottom: 0;
+}
+.title_description {
+	text-align: center;
+	margin-top: 0;
+}
+
+.main {
+	position: absolute;
+	width: 90%;
+	top: 60px;
+	overflow: visible;
+	margin: 0 5%;
+}
+
+.head th {
+	border-bottom: 1px solid black;
+}
+
+.report {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.left {
+	text-align: left;
+}
+
+.right {
+	text-align: right;
+}

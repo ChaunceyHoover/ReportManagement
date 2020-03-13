@@ -1,0 +1,80 @@
+﻿<md-dialog aria-label="Add User">
+	<form ng-cloak style="margin-bottom:0">
+		<md-toolbar md-class="md-primary">
+			<div class="md-toolbar-tools" layout="row">
+				<h2>Add New User</h2>
+				<span flex></span>
+				<md-button class="md-icon-button" ng-click="cancel()">
+					<md-icon md-svg-src="close" aria-label="Close"></md-icon>
+				</md-button>
+			</div>
+		</md-toolbar>
+		<md-dialog-content md-colors="{'background-color': 'grey-A100'}">
+			<div layout-padding class="md-dialog-content" >
+				<p md-colors="{'color': '{{theme}}-warn'}">{{errorMessage}}</p>
+				<h2 class="md-headline">Personal Info</h2>
+				<div layout="row" flex>
+					<md-input-container flex>
+						<label>First Name</label>
+						<input required ng-model="user.fName" />
+					</md-input-container>
+					<md-input-container flex>
+						<label>Last Name</label>
+						<input ng-model="user.lName" />
+					</md-input-container>
+				</div>
+				<div flex>
+					<p>Permission Level *</p>
+					<md-select ng-model="user.level">
+						<md-option ng-disabled="level.label == 'RESERVED'" ng-repeat="level in levels" ng-value="level.value">{{level.label}} ({{level.value}})</md-option> <!-- future update: {{level.label}} ({{level.value}}) -->
+					</md-select>
+				</div>
+				<div layout="column">
+					<p class="md-title">Site Permission(s)</p>
+					<div layout="row">
+						<select id="multi_select1" style="width:250px; margin-right:2px;" multiple="multiple">
+							<option id="{{site.siteId}}" ng-repeat="site in sites" ng-if="!site.user_has_access">{{site.siteNumber}} - {{site.siteName}}</option>
+						</select>
+						<select id="multi_select2" style="width:250px; margin-left:2px;" multiple="multiple">
+							<option id="{{site.siteId}}" ng-repeat="site in sites" ng-if="site.user_has_access">{{site.siteNumber}} - {{site.siteName}}</option>
+						</select>
+					</div>
+					<div layout="row" flex>
+						<span flex></span>
+						<md-button class="md-raised" ng-click="removeSite()">&lt; Remove</md-button>
+						<md-button class="md-raised" ng-click="addSite()">Add &gt;</md-button>
+						<span flex></span>
+					</div>
+				</div><br /><br />
+				<h2 class="md-headline">Account Info</h2>
+				<md-input-container flex>
+					<label>Username</label>
+					<input required flex ng-model="user.userName" />
+				</md-input-container>
+				<md-input-container flex>
+					<label>Email</label>
+					<input flex ng-model="user.email" />
+				</md-input-container><br />
+				<md-input-container>
+					<label>Password</label>
+					<input type="password" required ng-model="user.password" />
+				</md-input-container>
+				<md-input-container>
+					<label>Confirm Password</label>
+					<input type="password" required ng-model="user.confirm_password" />
+				</md-input-container><br />
+				<md-input-container>
+					<label>Phone Number</label>
+					<input type="text" phone-input required ng-model="user.phone" />
+				</md-input-container><br />
+				<p md-colors="{'color': '{{theme}}-warn'}">{{errorMessage}}</p>
+				<div layout="row" flex>
+					<span flex></span>
+					<md-button class="md-raised" ng-click="cancel()">Cancel</md-button>
+					<md-button class="md-raised md-warn" ng-click="createDistrib()">Create Distributor</md-button>
+					<md-button class="md-raised md-primary" ng-click="create()">Create</md-button>
+				</div>
+			</div>
+		</md-dialog-content>
+	</form>
+</md-dialog>

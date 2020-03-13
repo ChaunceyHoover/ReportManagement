@@ -1,0 +1,151 @@
+<md-content ng-cloak layout-fill>
+	<md-tabs md-dynamic-height md-border-bottom>
+		<md-tab label="SITE">
+			<!-- Site tab -->
+			<div layout="row" layout-align="center center" layout-padding flex>
+				<span flex="25"></span>
+				<div layout="column" flex md-colors="{'background-color': 'grey-A100'}" md-whiteframe>
+					<!-- title -->
+					<div layout="row" layout-align="center center">
+						<p class="md-headline">System Details</p>
+					</div>
+					<!-- system details -->
+					<div layout="row">
+						<span flex="10"></span>
+						<md-input-container flex>
+							<label>Distributor</label>
+							<md-select ng-model="dummy">
+								<md-option ng-repeat="distrib in distributors" ng-value="distrib.id">{{distrib.id}} - {{distrib.name}}</md-option>
+							</md-select>
+						</md-input-container>
+						<span flex="10"></span>
+						<md-input-container flex>
+							<label>System</label>
+							<md-select ng-model="dummy2">
+								<md-option ng-repeat="system in systems" ng-value="system.id">{{system.name}}</md-option>
+							</md-select>
+						</md-input-container>
+						<span flex="10"></span>
+					</div><br /><br />
+					<!-- owner info -->
+					<div layout="row" layout-align="center center">
+						<p class="md-headline">Owner Info</p>
+					</div>
+					<div layout="row">
+						<span flex="10"></span>
+						<md-input-container flex>
+							<label>Owner Name</label>
+							<input type="text" ng-model="site.name" />
+						</md-input-container>
+						<md-input-container flex>
+							<label>Owner Email</label>
+							<input type="text" ng-model="site.lname" />
+						</md-input-container>
+						<md-input-container flex="17">
+							<label>Owner Phone Number</label>
+							<input type="text" phone-input ng-model="site.phoneNumber" />
+						</md-input-container>
+						<span flex="10"></span>
+					</div><br /><br />
+					<!-- room info -->
+					<div layout="row" layout-align="center center">
+						<p class="md-headline">Room Info</p>
+					</div>
+					<div layout="row">
+						<span flex="10"></span>
+						<md-input-container flex="60">
+							<label>Address</label>
+							<input type="text" ng-model="site.address" />
+						</md-input-container>
+						<md-input-container flex>
+							<label>City</label>
+							<input type="text" ng-model="site.city" />
+						</md-input-container>
+						<span flex="10"></span>
+					</div>
+					<div layout="row">
+						<span flex="10"></span>
+						<md-input-container flex>
+							<label>State</label>
+							<input type="text" ng-model="site.state" />
+						</md-input-container>
+						<md-input-container flex>
+							<label>Zip</label>
+							<input type="number" ng-model="site.zip" />
+						</md-input-container>
+						<md-input-container flex>
+							<label>Country</label>
+							<input type="text" ng-model="site.country" />
+						</md-input-container>
+						<span flex="10"></span>
+					</div>
+					<div layout="row">
+						<span flex="10"></span>
+						<div layout="column" flex>
+							<p>Install Date</p>
+							<md-datepicker md-max-date="today" ng-model="site.dateInstalled"></md-datepicker>
+						</div>
+						<md-input-container flex>
+							<label>Store Phone Number</label>
+							<input type="text" phone-input ng-model="site.store_phone" />
+						</md-input-container>
+						<span flex="10"></span>
+					</div><br /><br />
+					<div layout="row">
+						<span flex="10"></span>
+						<md-input-container class="md-block" flex>
+							<label>Site Notes</label>
+							<textarea ng-model="site.site_notes" md-maxlength="300" rows="2" md-select-on-focus></textarea>
+						</md-input-container>
+						<span flex="10"></span>
+					</div>
+					<div layout="row"> <!-- ng-if="userIsAdmin()" -->
+						<span flex></span>
+						<md-button class="md-primary md-raised">Save</md-button>
+					</div>
+				</div>
+				<span flex="25"></span>
+			</div>
+		</md-tab>
+		<md-tab label="DISTRIBUTOR">
+			<!-- Site tab -->
+			<div layout="row" layout-align="center center" layout-padding flex>
+				<span flex="25"></span>
+				<div layout="column" flex md-colors="{'background-color': 'grey-A100'}" md-whiteframe>
+					<div layout="row" layout-align="center center">
+						<p class="md-headline">Distributor Info</p>
+					</div>
+					<div layout="row">
+						<span flex="10"></span>
+						<md-input-container flex>
+							<label>Distributor Name</label>
+							<input type="text" ng-model="distributor.name" />
+						</md-input-container>
+						<md-input-container flex>
+							<label>Contact Number</label>
+							<input type="text" phone-input ng-model="distribtor.number" />
+						</md-input-container>
+						<md-input-container flex>
+							<label>Contact Email</label>
+							<input type="text" ng-model="distribtor.email" />
+						</md-input-container>
+						<span flex="10"></span>
+					</div>
+					<div layout="row">
+						<span flex="10"></span>
+						<md-input-container class="md-block" flex>
+							<label>Distributor Notes</label>
+							<textarea ng-model="distributor.notes" md-maxlength="300" rows="2" md-select-on-focus></textarea>
+						</md-input-container>
+						<span flex="10"></span>
+					</div>
+					<div layout="row"> <!-- ng-if="userIsAdmin()" -->
+						<span flex></span>
+						<md-button class="md-primary md-raised">Save</md-button>
+					</div>
+				</div>
+				<span flex="25"></span>
+			</div>
+		</md-tab>
+	</md-tabs>
+</md-content>

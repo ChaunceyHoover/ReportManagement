@@ -1,0 +1,54 @@
+﻿<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<meta http-equiv="cache-control" content="no-store" />
+
+		<base href="/">
+		<title>Login - Report Portal</title>
+
+		<link rel="stylesheet" href="css/angular-material.min.css" type="text/css" />
+		<link rel="stylesheet" href="css/loading-bar.min.css" type="text/css" />
+		<link rel="stylesheet" href="css/login.css" type="text/css" />
+	</head>
+	<body ng-app="ReportManagerLogin" ng-controller="LoginCtrl">
+		<div layout="column">
+			<div flex="35" class="color-bg" md-whiteframe="4" md-colors="{'background': 'primary'}" layout="row">
+				<span flex></span>
+				<md-content class="login-bg" flex="45">
+					<div layout="column">
+						<md-icon class="icon" md-svg-icon="user" aria-label="Test"></md-icon>
+					</div>
+					<div layout="column" layout-align="center center" ng-cloak>
+						<p class="error-message">{{errorMessage}}</p>
+						<md-input-container>
+							<label>Username</label>
+							<input ng-model="user.username" />
+						</md-input-container>
+						<md-input-container>
+							<label>Password</label>
+							<input type="password" ng-model="user.password" />
+						</md-input-container>
+						<md-button ng-click="login()" class="md-primary md-raised">Login</md-button>
+					</div>
+				</md-content>
+				<span flex></span>
+			</div>
+			<md-content flex="60" class="md-primary"></md-content>
+		</div>
+
+		<!-- Angular libraries -->
+		<script type="text/javascript" src="js/angular.min.js"></script>
+		<script type="text/javascript" src="js/angular-route.min.js"></script>
+		<script type="text/javascript" src="js/angular-animate.min.js"></script>
+		<script type="text/javascript" src="js/angular-aria.min.js"></script>
+		<script type="text/javascript" src="js/angular-messages.min.js"></script>
+		<script type="text/javascript" src="js/angular-material.min.js"></script>
+		<script type="text/javascript" src="js/loading-bar.min.js"></script>
+
+		<!-- My JS -->
+		<script src="js/loginApp.js"></script>
+	</body>
+</html>

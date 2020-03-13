@@ -1,0 +1,81 @@
+﻿<md-dialog aria-label="Add User">
+	<form ng-cloak style="margin-bottom:0">
+		<md-toolbar md-class="md-primary">
+			<div class="md-toolbar-tools" layout="row">
+				<h2>Adjustment Info</h2>
+				<span flex></span>
+				<md-button class="md-icon-button" ng-click="close()">
+					<md-icon md-svg-src="close" aria-label="Close"></md-icon>
+				</md-button>
+			</div>
+		</md-toolbar>
+		<md-dialog-content md-colors="{'background-color': 'grey-A100'}">
+			<div layout-padding class="md-dialog-content">
+				<div layout="row">
+					<h6 style="text-align:left;" flex>Submitted By</h6>
+					<div layout="column" style="text-align:right;" flex>
+						<p>{{adjustment.submittedBy}}</p>
+						<p>{{adjustment.submissionDate | date:'short'}}</p>
+					</div>
+				</div>
+				<div layout="row">
+					<h6 style="text-align:left;" flex>Claimed By</h6>
+					<div layout="column" style="text-align:right;" flex>
+						<p ng-if="adjustment.claimedById">{{adjustment.claimedByName}}</p>
+						<p ng-if="adjustment.claimedById">{{adjustment.claimedDate | date:'short'}}</p>
+						<p ng-if="!adjustment.claimedById">N/A</p>
+					</div>
+				</div>
+				<div layout="row">
+					<h6 style="text-align:left;" flex>Completed By</h6>
+					<div layout="column" style="text-align:right;" flex>
+						<p ng-if="adjustment.completed">{{adjustment.claimedByName}}</p>
+						<p ng-if="adjustment.completed">{{adjustment.completedDate | date:'short'}}</p>
+						<p ng-if="!adjustment.completed">N/A</p>
+					</div>
+				</div>
+				<div layout="column" style="padding:0;">
+					<p class="md-title" style="margin-bottom:0;">Week</p>
+					<div layout="row">
+						<p class="md-subhead">Money In: {{adjustment.weekMoneyIn | currency}} | Money Out: {{adjustment.weekMoneyOut | currency}} | Money Hold: {{adjustment.weekMoneyHold | currency}} | {{adjustment.weekMoneyPercent | percentage }}</p>
+					</div>
+				</div>
+				<div layout="column" style="padding:0;">
+					<p class="md-title" style="margin-bottom:0;">Month</p>
+					<div layout="row">
+						<p class="md-subhead">Money In: {{adjustment.monthMoneyIn | currency}} | Money Out: {{adjustment.monthMoneyOut | currency}} | Money Hold: {{adjustment.monthMoneyHold | currency}} | {{adjustment.monthMoneyPercent | percentage }}</p>
+					</div>
+				</div>
+				<md-divider></md-divider>
+				<div layout-gt-xs="row" layout-xs="column">
+					<div layout="column" class="pseudo-input" style="margin-right:6px;" flex-gt-xs>
+						<p>IP</p>
+						<p>{{adjustment.ip}}</p>
+					</div>
+					<div layout="column" class="pseudo-input" flex-gt-xs>
+						<p>Restart Time</p>
+						<p>{{adjustment.restartTime | date:'short'}}</p>
+					</div>
+					<div layout="column" class="pseudo-input" style="margin-left:6px;" flex-gt-xs>
+						<p>Time Ran</p>
+						<p>{{adjustment.timeRan | date:'short'}}</p>
+					</div>
+				</div>
+				<div layout="row" class="no-margin">
+					<div layout="column" class="pseudo-input" flex>
+						<p>Notes</p>
+						<p>{{adjustment.notes}}</p>
+					</div>
+				</div>
+				<div layout="row" class="no-margin">
+					<md-checkbox ng-disabled="true" ng-model="adjustment.resetRequest">Full Reset?</md-checkbox>
+				</div>
+				<div layout="row">
+					<span flex></span>
+					<md-button class="md-raised" ng-click="close()">Close</md-button>
+					<md-button class="md-raised md-primary" ng-click="viewAdjustment()">View</md-button>
+				</div>
+			</div>
+		</md-dialog-content>
+	</form>
+</md-dialog>

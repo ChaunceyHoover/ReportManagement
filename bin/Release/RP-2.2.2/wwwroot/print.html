@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<meta http-equiv="cache-control" content="no-store" />
+
+	<base href="/">
+	<title>Report Portal</title>
+
+	<!-- Library CSS files -->
+	<link rel="stylesheet" href="css/angular-material.min.css" type="text/css" />
+
+	<!-- Custom CSS file -->
+	<link rel="stylesheet" href="css/print.css" type="text/css" />
+</head>
+<body ng-app="ReportManagerPrint" ng-controller="PrintCtrl">
+	<div class="title_container">
+		<h1 class="title_text">{{start | date:'short'}} - {{end | date:'short'}}</h1>
+		<p class="title_description">{{user}}</p>
+	</div>
+	<div class="main">
+		<table class="report">
+			<tr class="head">
+				<th class="left">ID {{sort == 'siteNumber' ? '&uarr;' : (sort == '-siteNumber' ? '&darr;' : '')}}</th>
+				<th class="left">Distributor {{sort == 'distributor' ? '&uarr;' : (sort == '-distributor' ? '&darr;' : '')}}</th>
+				<th class="left">System {{sort == 'systemName' ? '&uarr;' : (sort == '-systemName' ? '&darr;' : '')}}</th>
+				<th class="left">Name {{sort == 'siteName' ? '&uarr;' : (sort == '-siteName' ? '&darr;' : '')}}</th>
+				<th class="right">In {{sort == 'moneyIn' ? '&uarr;' : (sort == '-moneyIn' ? '&darr;' : '')}}</th>
+				<th class="right">Out {{sort == 'moneyOut' ? '&uarr;' : (sort == '-moneyOut' ? '&darr;' : '')}}</th>
+				<th class="right">Hold {{sort == 'moneyHold' ? '&uarr;' : (sort == '-moneyHold' ? '&darr;' : '')}}</th>
+				<th class="right">% {{sort == 'moneyPercent' ? '&uarr;' : (sort == '-moneyPercent' ? '&darr;' : '')}}</th>
+			</tr>
+			<tr class="body" ng-repeat="s in sites track by $index">
+				<td class="left" md-cell>{{::s.siteNumber}}</a></td>
+				<td class="left" md-cell>{{::s.distributor}}</td>
+				<td class="left" md-cell>{{::s.systemName}}</td>
+				<td class="left" md-cell>{{::s.siteName}}</td>
+				<td ng-if="s.moneyIn != 0" class="right" md-cell>{{::s.moneyIn | currency}}</td>
+				<td ng-if="s.moneyIn == 0" class="right" md-cell>-</td>
+				<td ng-if="s.moneyOut != 0" class="right" md-cell>{{::s.moneyOut | currency}}</td>
+				<td ng-if="s.moneyOut == 0" class="right" md-cell>-</td>
+				<td ng-if="s.moneyIn - s.moneyOut != 0 && s.moneyOut && s.moneyIn" class="right" md-cell>{{::s.moneyIn - s.moneyOut | currency}}</td>
+				<td ng-if="s.moneyIn - s.moneyOut == 0 || s.moneyIn == null" class="right" md-cell>-</td>
+				<td ng-if="s.moneyIn - s.moneyOut != 0 && s.moneyIn != 0" md-cell class="right" md-colors="::{'color': getPercentColor((s.moneyIn - s.moneyOut) / s.moneyIn)}">{{::((s.moneyIn - s.moneyOut) / s.moneyIn) | percentage:2}}</td>
+				<td ng-if="s.moneyIn - s.moneyOut == 0 || s.moneyIn == 0" md-cell class="right">-</td>
+			</tr>
+		</table>
+	</div>
+
+	<!-- Angular Libraries -->
+	<script type="text/javascript" src="js/angular.min.js"></script>
+	<script type="text/javascript" src="js/angular-route.min.js"></script>
+	<script type="text/javascript" src="js/angular-animate.min.js"></script>
+	<script type="text/javascript" src="js/angular-aria.min.js"></script>
+	<script type="text/javascript" src="js/angular-messages.min.js"></script>
+	<script type="text/javascript" src="js/angular-material.min.js"></script>
+	<script type="text/javascript" src="js/date.js"></script>
+
+	<!-- My App - load last -->
+	<script type="text/javascript" src="js/printApp.js"></script>
+</body>
+</html>

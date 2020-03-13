@@ -1,0 +1,51 @@
+﻿<md-dialog aria-label="Log Viewer" md-colors="{'background-color': 'grey-A100'}">
+	<md-toolbar md-class="md-primary">
+		<div class="md-toolbar-tools" layout="row">
+			<h2>Log Details</h2>
+			<span flex></span>
+			<md-button class="md-icon-button" ng-click="close()">
+				<md-icon md-svg-src="close" aria-label="Close"></md-icon>
+			</md-button>
+		</div>
+	</md-toolbar>
+
+	<div layout-padding layout="column" layout-align="center center">
+		<div layout="row" style="width:100%;">
+			<div layout="column" style="margin:0 4px 0 0;min-width:75px;" class="pseudo-input">
+				<p>Log ID</p>
+				<p>{{::log.logId}}</p>
+			</div>
+			<div style="margin:0 0 0 4px;width:100%;" layout="column" class="pseudo-input">
+				<p>User</p>
+				<p>{{::log.userName}}</p>
+			</div>
+		</div>
+		<div layout="row" style="width:100%;">
+			<div layout="column" style="margin:0;width:100%;margin:0 4px 0 0;" class="pseudo-input">
+				<p>Action</p>
+				<p>{{::log.actionName}}</p>
+			</div>
+			<div layout="column" style="margin:0 0 0 4px;width:100%;" class="pseudo-input">
+				<p>Time</p>
+				<p>{{::log.logTime | date:'short'}}</p>
+			</div>
+		</div>
+		<div layout="row" style="width:100%;">
+			<div layout="column" style="margin:0;max-width:350px;" class="pseudo-input">
+				<p>Description</p>
+				<p>{{::log.description}}</p>
+			</div>
+		</div>
+		<div layout="column" style="width:100%;overflow:auto;" ng-if="log.changes.length > 0">
+			<p style="font-size:12px;color:rgba(0, 0, 0, 0.54);margin-bottom:0;">Changes</p>
+			<div layout="column" style="margin:0;width:100%;border:1px dashed rgba(0, 0, 0, 0.12);">
+				<p ng-repeat="change in log.changes" style="margin:0;">{{change}}</p>
+			</div>
+		</div>
+		<div layout="row" style="width:100%">
+			<span flex></span>
+			<md-button class="md-raised" ng-click="close()">Close</md-button>
+			<md-button class="md-raised md-primary" ng-disabled="isDisabled(log)" ng-click="viewEvent()">View</md-button>
+		</div>
+	</div>
+</md-dialog>

@@ -1,0 +1,971 @@
+<md-content id="siteDetailsContent" style="height:fit-content" ng-cloak layout-fill>
+	<md-tabs md-autoselect="" md-dynamic-height md-border-bottom md-selected="tabs.index">
+		<md-tab label="SITE">
+			<div hide-xs hide-sm layout="row" layout-align="center center" layout-padding flex>
+				<span flex="25"></span>
+				<div layout="column" flex md-colors="{'background-color': 'grey-A100'}" md-whiteframe>
+					<!-- title -->
+					<div layout="row" layout-align="center center">
+						<p class="md-headline">Site Details</p>
+					</div>
+					<!-- system details -->
+					<div layout="row">
+						<span flex="10"></span>
+						<md-input-container flex="15">
+							<label>Site ID</label>
+							<input type="text" ng-model="site.siteNumber" disabled />
+						</md-input-container>
+						<span flex="5"></span>
+						<md-input-container flex>
+							<label>Site Name</label>
+							<input type="text" ng-model="site.siteName" />
+						</md-input-container>
+						<span flex="10"></span>
+					</div>
+					<div layout="row" hide-xs>
+						<span flex="10"></span>
+						<md-input-container flex>
+							<label>Distributor</label>
+							<md-select ng-model="site.siteDistributor">
+								<md-option ng-repeat="distrib in distributors" ng-value="distrib.id">{{distrib.id}} - {{distrib.name}}</md-option>
+							</md-select>
+						</md-input-container>
+						<span flex="10"></span>
+						<md-input-container ng-if="systems" flex>
+							<label>System</label>
+							<md-select ng-model="site.systemId">
+								<md-option ng-repeat="system in systems" ng-value="system.id">{{system.name}}</md-option>
+							</md-select>
+						</md-input-container>
+						<div class="pseudo-input" ng-if="!systems" flex>
+							<p>System</p>
+							<p>{{system.name}}</p>
+						</div>
+						<span flex="10"></span>
+					</div>
+					<div layout="row" hide show-xs>
+						<md-input-container flex>
+							<label>Distributor</label>
+							<md-select ng-model="site.siteDistributor">
+								<md-option ng-repeat="distrib in distributors" ng-value="distrib.id">{{distrib.id}} - {{distrib.name}}</md-option>
+							</md-select>
+						</md-input-container>
+						<span flex="10"></span>
+					</div>
+					<div layout="row" hide show-xs>
+						<span flex="10"></span>
+						<md-input-container flex>
+							<label>System</label>
+							<md-select ng-model="site.systemId">
+								<md-option ng-repeat="system in systems" ng-value="system.id">{{system.name}}</md-option>
+							</md-select>
+						</md-input-container>
+						<span flex="10"></span>
+					</div>
+					<br /><br />
+					<!-- owner info -->
+					<div layout="row" layout-align="center center">
+						<p class="md-headline">Owner Info</p>
+					</div>
+					<div layout="row">
+						<span flex="10"></span>
+						<md-input-container flex>
+							<label>Owner Name</label>
+							<input type="text" ng-model="site.siteOwnerName" />
+						</md-input-container>
+						<md-input-container flex="17">
+							<label>Owner Phone Number</label>
+							<input type="text" phone-input ng-model="site.siteOwnerPhone" />
+						</md-input-container>
+						<span flex="10"></span>
+					</div><br />
+					<div layout="row">
+						<span flex="10"></span>
+						<md-input-container flex>
+							<label>Owner Email</label>
+							<input type="text" ng-model="site.siteOwnerEmail" />
+						</md-input-container>
+						<span flex="10"></span>
+					</div><br /><br />
+					<!-- room info -->
+					<div layout="row" layout-align="center center">
+						<p class="md-headline">Room Info</p>
+					</div>
+					<div ng-if="communityDropValid || grandDropValid" layout="row" layout-align="center center">
+						<span flex="10"></span>
+						<div ng-if="communityDropValid" layout="column" class="pseudo-input" flex>
+							<p>Last Community Drop</p>
+							<p>{{site.lastCommunityDrop | date:'short'}}</p>
+						</div>
+						<span flex ng-if="!communityDropValid"></span>
+						<span flex="5"></span>
+						<div ng-if="grandDropValid" layout="column" class="pseudo-input" flex>
+							<p>Last Grand Drop</p>
+							<p>{{site.lastGrandDrop | date:'short'}}</p>
+						</div>
+						<span flex ng-if="!grandDropValid"></span>
+						<span flex="10"></span>
+					</div>
+					<div layout="row">
+						<span flex="10"></span>
+						<md-input-container flex="60">
+							<label>Address</label>
+							<input type="text" ng-model="site.siteAddress" />
+						</md-input-container>
+						<md-input-container flex>
+							<label>City</label>
+							<input type="text" ng-model="site.siteCity" />
+						</md-input-container>
+						<span flex="10"></span>
+					</div>
+					<div layout="row">
+						<span flex="10"></span>
+						<md-input-container flex>
+							<label>State</label>
+							<input type="text" ng-model="site.siteState" />
+						</md-input-container>
+						<md-input-container flex>
+							<label>Zip</label>
+							<input type="text" ng-model="site.siteZip" />
+						</md-input-container>
+						<md-input-container flex>
+							<label>Country</label>
+							<input type="text" ng-model="site.siteCountry" />
+						</md-input-container>
+						<span flex="10"></span>
+					</div>
+					<div layout="row">
+						<span flex="10"></span>
+						<md-checkbox style="margin:18px 0 0 0;max-height:30px" ng-model="site.isTwentyFourSeven" class="no-margin">Store Open 24/7</md-checkbox>
+						<span flex></span>
+						<div layout="row">
+							<md-input-container style="min-width:125px">
+								<label>Store Open Time</label>
+								<input type="time" ng-disabled="site.isTwentyFourSeven" ng-model="site.storeOpenTime" />
+							</md-input-container>
+							<md-input-container style="min-width:125px">
+								<label>Store Close Time</label>
+								<input type="time" ng-disabled="site.isTwentyFourSeven" ng-model="site.storeCloseTime" />
+							</md-input-container>
+						</div>
+						<span flex="10"></span>
+					</div>
+					<br />
+					<div layout="row">
+						<span flex="10"></span>
+						<div layout="column" flex>
+							<p>Install Date</p>
+							<md-datepicker md-max-date="today" ng-model="site.siteDateInstalled"></md-datepicker>
+						</div>
+						<md-input-container flex>
+							<label>Store Phone Number</label>
+							<input type="text" phone-input ng-model="site.storePhone" />
+						</md-input-container>
+						<span flex="10"></span>
+					</div><br /><br />
+					<div layout="row" ng-if="permissionLevel == 10 || canEditSite">
+						<span flex="10"></span>
+						<div layout="column">
+							<md-checkbox ng-model="site.siteEnabled">Site Enabled - Turns the site on or off</md-checkbox>
+							<md-checkbox ng-model="site.siteActive">Site Active - Shows or hides the site from report management</md-checkbox>
+						</div>
+						<span flex="10"></span>
+					</div>
+					<div ng-if="!site.siteEnabled && site.comment.length > 0" layout="row">
+						<span flex="10"></span>
+						<h6>{{site.comment}}</h6>
+						<span flex="10"></span>
+					</div>
+					<div layout="row">
+						<span flex="10"></span>
+						<md-input-container class="md-block" flex>
+							<label>Site Notes</label>
+							<textarea ng-model="site.notes" md-maxlength="300" rows="2" md-select-on-focus></textarea>
+						</md-input-container>
+						<span flex="10"></span>
+					</div>
+					<div layout="row">
+						<span flex></span>
+						<md-button class="md-raised" ng-click="close()">Close</md-button>
+						<div class="hint-wrapper">
+							<md-button ng-disabled="!(permissionLevel == 10 || canEditSite)" class="md-primary md-raised" ng-click="saveInfo()">Save</md-button>
+							<p ng-if="!(permissionLevel == 10 || canEditSite)" class="hint">Access denied</p>
+						</div>
+					</div>
+				</div>
+				<span flex="25"></span>
+			</div>
+			<div hide show-xs show-sm layout="row" layout-align="center center" layout-padding flex>
+				<span flex="5"></span>
+				<div layout="column" flex md-colors="{'background-color': 'grey-A100'}" md-whiteframe>
+					<!-- title -->
+					<div layout="row" layout-align="center center">
+						<p class="md-headline">Site Details</p>
+					</div>
+					<!-- system details -->
+					<div layout="row">
+						<span flex="10"></span>
+						<md-input-container style="margin:9px 0 0 0;" flex="20">
+							<label>Site ID</label>
+							<input type="text" ng-model="site.siteNumber" disabled />
+						</md-input-container>
+						<span flex="5"></span>
+						<md-input-container style="margin:9px 0 0 0;" flex>
+							<label>Site Name</label>
+							<input type="text" ng-model="site.siteName" />
+						</md-input-container>
+						<span flex="10"></span>
+					</div>
+					<div layout="row">
+						<span flex="10"></span>
+						<md-input-container style="margin:0;" flex>
+							<label>Distributor</label>
+							<md-select ng-model="site.siteDistributor">
+								<md-option ng-repeat="distrib in distributors" ng-value="distrib.id">{{distrib.id}} - {{distrib.name}}</md-option>
+							</md-select>
+						</md-input-container>
+						<span flex="10"></span>
+					</div><br /><br />
+					<div layout="row">
+						<span flex="10"></span>
+						<md-input-container style="margin:0;" flex>
+							<label>System</label>
+							<md-select ng-model="site.systemId">
+								<md-option ng-repeat="system in systems" ng-value="system.id">{{system.name}}</md-option>
+							</md-select>
+						</md-input-container>
+						<span flex="10"></span>
+					</div><br />
+					<!-- owner info -->
+					<div layout="row" layout-align="center center">
+						<p class="md-headline">Owner Info</p>
+					</div>
+					<div layout="row">
+						<span flex="10"></span>
+						<md-input-container style="margin:9px 0 0 0;" flex>
+							<label>Owner Name</label>
+							<input type="text" ng-model="site.siteOwnerName" />
+						</md-input-container>
+						<span flex="10"></span>
+					</div>
+					<div layout="row">
+						<span flex="10"></span>
+						<md-input-container style="margin:0;" flex>
+							<label>Owner Phone Number</label>
+							<input type="text" phone-input ng-model="site.siteOwnerPhone" />
+						</md-input-container>
+						<span flex="10"></span>
+					</div>
+					<div layout="row">
+						<span flex="10"></span>
+						<md-input-container style="margin:0;" flex>
+							<label>Owner Email</label>
+							<input type="text" ng-model="site.siteOwnerEmail" />
+						</md-input-container>
+						<span flex="10"></span>
+					</div><br />
+					<!-- room info -->
+					<div layout="row" layout-align="center center">
+						<p class="md-headline">Room Info</p>
+					</div>
+					<div layout="row">
+						<span flex="10"></span>
+						<md-input-container style="margin:9px 0 0 0;" flex>
+							<label>Address</label>
+							<input type="text" ng-model="site.siteAddress" />
+						</md-input-container>
+						<span flex="10"></span>
+					</div>
+					<div layout="row">
+						<span flex="10"></span>
+						<md-input-container style="margin:0;" flex>
+							<label>City</label>
+							<input type="text" ng-model="site.siteCity" />
+						</md-input-container>
+						<md-input-container style="margin:0;" flex="25">
+							<label>State</label>
+							<input type="text" ng-model="site.siteState" />
+						</md-input-container>
+						<span flex="10"></span>
+					</div>
+					<div layout="row">
+						<span flex="10"></span>
+						<md-input-container style="margin:0;" flex="20">
+							<label>Zip</label>
+							<input type="text" ng-model="site.siteZip" />
+						</md-input-container>
+						<md-input-container style="margin:0;" flex>
+							<label>Country</label>
+							<input type="text" ng-model="site.siteCountry" />
+						</md-input-container>
+						<span flex="10"></span>
+					</div>
+					<div layout="row">
+						<span flex="10"></span>
+						<md-input-container flex>
+							<label>Store Phone Number</label>
+							<input type="text" phone-input ng-model="site.storePhone" />
+						</md-input-container>
+						<span flex="10"></span>
+					</div>
+					<div layout="row">
+						<span flex="10"></span>
+						<div layout="column" flex>
+							<p>Install Date</p>
+							<md-datepicker md-max-date="today" ng-model="site.siteDateInstalled"></md-datepicker>
+						</div>
+						<span flex="10"></span>
+					</div><br />
+					<div layout="row">
+						<span flex="10"></span>
+						<md-input-container class="md-block" flex>
+							<label>Site Notes</label>
+							<textarea ng-model="site.notes" md-maxlength="300" rows="2" md-select-on-focus></textarea>
+						</md-input-container>
+						<span flex="10"></span>
+					</div>
+					<div layout="row">
+						<!-- ng-if="userIsAdmin()" -->
+						<span flex></span>
+						<md-button class="md-raised" ng-click="close()">Close</md-button>
+						<div class="hint-wrapper">
+							<md-button ng-disabled="!(permissionLevel == 10 || canEditSite)" class="md-primary md-raised" ng-click="saveInfo()">Save</md-button>
+							<p ng-if="!(permissionLevel == 10 || canEditSite)" class="hint">Access denied</p>
+						</div>
+					</div>
+				</div>
+				<span flex="5"></span>
+			</div>
+		</md-tab>
+		<md-tab label="ACTIVATION" ng-if="permissionLevel == 10 || permissionLevel == 4 || permissionLevel == 5">
+			<div ng-if="success != -1">
+				<md-toolbar ng-if="activations[0].activation.approvedBy" style="max-height:32px;min-height:32px" md-colors="{'background-color': '{{theme}}-primary-A100'}">
+					<div ng-if="latestActivation" class="md-toolbar-tools" layout="row" layout-align="center center" md-colors="{'color': 'grey-A100'}">
+						<p class="md-subhead no-margin">
+							Key: {{latestActivation.activation.key}} | Last IP: {{latestActivation.siteQuickInfo.siteLastIp}} | Last Ping: {{latestActivation.siteQuickInfo.siteLastPing | date:'short'}}
+						</p>
+					</div>
+				</md-toolbar>
+				<div layout-fill layout="column" ng-repeat="form in activations">
+					<div layout="row" layout-align="center center" layout-padding>
+						<span hide-xs hide-sm flex="25"></span>
+						<span hide show-sm flex="10"></span>
+						<div layout="column" flex md-colors="{'background-color': 'grey-A100'}" md-whiteframe>
+							<div layout="column" layout-align="center center">
+								<p class="md-headline" style="margin-bottom:0">Activation Form Submitted</p>
+								<p class="md-title" style="margin-top:0">{{form.activation.submissionDate | date:'short'}}</p>
+							</div>
+							<div ng-if="success != -1">
+								<div layout="row">
+									<span flex="5"></span>
+									<div layout="column" class="pseudo-input">
+										<p>Site ID</p>
+										<p>{{form.activation.siteId}}</p>
+									</div>
+									<span flex="5"></span>
+									<div layout="column" class="pseudo-input" flex>
+										<p>Site Name</p>
+										<p>{{form.activation.roomName}}</p>
+									</div>
+									<span hide-xs flex="5"></span>
+									<div hide-xs layout="column" class="pseudo-input" flex>
+										<p>System</p>
+										<p>{{form.system.name}}</p>
+									</div>
+									<span hide-xs flex="5"></span>
+								</div>
+								<div layout="row">
+									<span hide show-xs flex="5"></span>
+									<div hide show-xs layout="column" class="pseudo-input" flex>
+										<p>System</p>
+										<p>{{form.system.name}}</p>
+									</div>
+									<span flex="5"></span>
+									<div layout="column" class="pseudo-input" flex>
+										<p>HP ID</p>
+										<p>{{form.activation.hpId}}</p>
+									</div>
+									<span hide-xs ng-if="form.activation.approvedBy != null" flex="5"></span>
+									<div hide-xs ng-if="form.activation.approvedBy != null" layout="column" class="pseudo-input" flex>
+										<p>Key</p>
+										<p>{{form.activation.key}}</p>
+									</div>
+									<span flex="5"></span>
+								</div>
+								<div layout="row" hide show-xs>
+									<span ng-if="form.activation.approvedBy != null" flex="5"></span>
+									<div ng-if="form.activation.approvedBy != null" layout="column" class="pseudo-input" flex>
+										<p>Key</p>
+										<p>{{form.activation.key}}</p>
+									</div>
+									<span flex="5"></span>
+								</div>
+								<div layout="row">
+									<span flex="5"></span>
+									<div layout="column" class="pseudo-input">
+										<p>Install Date</p>
+										<p>{{form.activation.installDate | date:'MM/dd/yyyy'}}</p>
+									</div>
+									<span flex="5"></span>
+									<div layout="column" class="pseudo-input" flex>
+										<p>Billing Email</p>
+										<p>{{form.activation.billingEmail}}</p>
+									</div>
+									<span hide-xs flex="5"></span>
+									<md-input-container hide-xs class="activation-phone-input">
+										<label>Store Phone</label>
+										<input type="text" phone-input disabled ng-model="form.activation.storePhone" />
+									</md-input-container>
+									<span flex="5"></span>
+								</div>
+								<br />
+								<div layout="row">
+									<span hide show-xs flex="5"></span>
+									<md-input-container hide show-xs class="activation-phone-input">
+										<label>Store Phone</label>
+										<input type="text" phone-input disabled ng-model="form.activation.storePhone" />
+									</md-input-container>
+									<span flex="5"></span>
+									<div layout="column" class="pseudo-input" flex>
+										<p>Installer Name</p>
+										<p>{{form.activation.installerFName}} {{form.activation.installerLName}}</p>
+									</div>
+									<span flex="5" hide-xs></span>
+									<div hide-xs layout="column" class="pseudo-input" flex>
+										<p>Installer Email</p>
+										<p>{{form.activation.installerEmail}}</p>
+									</div>
+									<span hide-xs flex="5"></span>
+									<md-input-container hide-xs class="activation-phone-input">
+										<label>Installer Phone</label>
+										<input type="text" phone-input disabled ng-model="form.activation.installerPhone" />
+									</md-input-container>
+									<span flex="5"></span>
+								</div>
+								<div layout="row" hide show-xs>
+									<span flex="5"></span>
+									<div layout="column" flex>
+										<span flex="5"></span>
+										<div layout="column" class="pseudo-input" flex>
+											<p>Installer Email</p>
+											<p>{{form.activation.installerEmail}}</p>
+										</div>
+										<span flex="5"></span>
+										<md-input-container class="activation-phone-input">
+											<label>Installer Phone</label>
+											<input type="text" phone-input disabled ng-model="form.activation.installerPhone" />
+										</md-input-container>
+										<span flex="5"></span>
+									</div>
+									<span flex="5"></span>
+								</div>
+								<div layout="row" hide-xs>
+									<span flex="5"></span>
+									<div layout="column" class="pseudo-input" flex>
+										<p>Manager Name</p>
+										<p>{{form.activation.managerFName}} {{form.activation.managerLName}}</p>
+									</div>
+									<span flex="5"></span>
+									<div layout="column" class="pseudo-input" flex>
+										<p>Manager Email</p>
+										<p>{{form.activation.managerEmail}}</p>
+									</div>
+									<span flex="5"></span>
+									<md-input-container class="activation-phone-input">
+										<label>Manager Phone</label>
+										<input type="text" phone-input disabled ng-model="form.activation.managerPhone" />
+									</md-input-container>
+									<span flex="5"></span>
+								</div>
+								<div layout="row" hide show-xs>
+									<span flex="5"></span>
+									<div layout="column">
+										<div layout="column" class="pseudo-input" flex>
+											<p>Manager Name</p>
+											<p>{{form.activation.managerFName}} {{form.activation.managerLName}}</p>
+										</div>
+										<div layout="column" class="pseudo-input" flex>
+											<p>Manager Email</p>
+											<p>{{form.activation.managerEmail}}</p>
+										</div>
+										<md-input-container class="activation-phone-input">
+											<label>Manager Phone</label>
+											<input type="text" phone-input disabled ng-model="form.activation.managerPhone" />
+										</md-input-container>
+									</div>
+									<span flex="5"></span>
+								</div>
+								<div layout="row" hide-xs>
+									<span flex="5"></span>
+									<div layout="column" class="pseudo-input" flex>
+										<p>Owner Name</p>
+										<p>{{form.activation.ownerFName}} {{form.activation.ownerLName}}</p>
+									</div>
+									<span flex="5"></span>
+									<div layout="column" class="pseudo-input" flex>
+										<p>Owner Email</p>
+										<p>{{form.activation.ownerEmail}}</p>
+									</div>
+									<span flex="5"></span>
+									<md-input-container class="activation-phone-input">
+										<label>Owner Phone</label>
+										<input type="text" phone-input disabled ng-model="form.activation.ownerPhone" />
+									</md-input-container>
+									<span flex="5"></span>
+								</div>
+								<div layout="row" hide show-xs>
+									<span flex="5"></span>
+									<div layout="column">
+										<div layout="column" class="pseudo-input" flex>
+											<p>Owner Name</p>
+											<p>{{form.activation.ownerFName}} {{form.activation.ownerLName}}</p>
+										</div>
+										<span flex="5"></span>
+										<div layout="column" class="pseudo-input" flex>
+											<p>Owner Email</p>
+											<p>{{form.activation.ownerEmail}}</p>
+										</div>
+										<span flex="5"></span>
+										<md-input-container class="activation-phone-input">
+											<label>Owner Phone</label>
+											<input type="text" phone-input disabled ng-model="form.activation.ownerPhone" />
+										</md-input-container>
+									</div>
+									<span flex="5"></span>
+								</div>
+								<div layout="row">
+									<span flex="5"></span>
+									<div layout="column" class="pseudo-input" flex>
+										<p>Distributor Username</p>
+										<p>{{form.activation.distributorUserName}}</p>
+									</div>
+									<span flex="5"></span>
+									<div layout="column" class="pseudo-input" flex>
+										<p>Distributor First Name</p>
+										<p>{{form.activation.distributorFName}}</p>
+									</div>
+									<div layout="column" class="pseudo-input" flex>
+										<p>Distributor Last Name</p>
+										<p>{{form.activation.distributorLName}}</p>
+									</div>
+									<span flex="5"></span>
+								</div>
+								<br />
+								<div layout="row">
+									<span flex="5"></span>
+									<div layout="column" class="pseudo-input" flex>
+										<p>Site Address</p>
+										<p>{{form.activation.siteAddress}}</p>
+									</div>
+									<span flex="5"></span>
+									<div layout="column" class="pseudo-input" flex="25">
+										<p>Site City</p>
+										<p>{{form.activation.siteCity}}</p>
+									</div>
+									<span flex="5"></span>
+								</div>
+								<div layout="row">
+									<span flex="5"></span>
+									<div layout="column" class="pseudo-input" flex>
+										<p>Site State</p>
+										<p>{{form.activation.siteState}}</p>
+									</div>
+									<span flex="5"></span>
+									<div layout="column" class="pseudo-input" flex>
+										<p>Site Country</p>
+										<p>{{form.activation.siteCountry}}</p>
+									</div>
+									<span flex="5"></span>
+									<div layout="column" class="pseudo-input" flex>
+										<p>Site Zip</p>
+										<p>{{form.activation.siteZip}}</p>
+									</div>
+									<span flex="5"></span>
+								</div>
+								<div layout="row">
+									<span flex="5"></span>
+									<div layout="column" class="pseudo-input" flex>
+										<p>Activation Notes</p>
+										<p>{{form.activation.activationNotes}}</p>
+									</div>
+									<span flex="5"></span>
+								</div>
+								<div layout="row">
+									<span flex="5"></span>
+									<md-input-container ng-if="form.activation.approvedBy == null" flex>
+										<label>Approval Notes</label>
+										<input type="text" ng-model="form.activation.approvalNotes" />
+									</md-input-container>
+									<span flex="5"></span>
+								</div>
+								<div layout="row" ng-if="form.activation.approvedBy != null">
+									<span flex="5"></span>
+									<div layout="column" class="pseudo-input" flex>
+										<p>Approval Notes</p>
+										<p>{{form.activation.approvalNotes}}</p>
+									</div>
+									<span flex="5"></span>
+								</div>
+								<div layout="row" ng-if="form.activation.approvedBy != null">
+									<span flex></span>
+									<div layout="column" class="pseudo-input" flex>
+										<p>Approved By</p>
+										<p>{{form.approver.name}}</p>
+									</div>
+									<span flex="5"></span>
+								</div>
+								<div layout="row">
+									<span flex></span>
+									<md-button ng-if="canDeleteSite || permissionLevel == 10" ng-click="deleteActivation(form.activation)" class="md-warn md-raised">Delete</md-button>
+									<md-button ng-if="(permissionLevel == 10 || canAddSite) && $index == 0" ng-disabled="form.activation.approvedBy != null" class="md-primary md-raised" ng-click="approve(form.activation)">{{form.activation.approvedBy == null ? 'Approve' : 'Approved'}}</md-button>
+									<md-button ng-if="$index != 0" ng-disabled="true" class="md-raised">{{ form.activation.approvedBy == null ? 'Cannot be approved (outdated)' : 'Approved' }}</md-button>
+								</div>
+								<span flex="10"></span>
+							</div>
+						</div>
+						<span hide show-sm flex="10"></span>
+						<span hide-xs hide-sm flex="25"></span>
+					</div>
+				</div>
+
+				<div style="height:48px"></div>
+				<div layout="row" style="position:absolute;bottom:0;width:100%;">
+					<div md-whiteframe flex layout="row" md-colors="{'background-color': '{{theme}}-primary'}">
+						<span flex></span>
+						<md-button class="md-raised" ng-click="close()">Close</md-button>
+						<md-button class="md-raised md-warn" ng-click="reactivate(form.activation.activationId)">Re-Activate</md-button>
+					</div>
+				</div>
+			</div>
+			<div ng-if="success == -1">
+				<div layout="row" style="margin-top:15px">
+					<span flex="15"></span>
+					<div layout="column" layout-padding flex md-colors="{'background-color': 'grey-A100'}" md-whiteframe>
+						<div layout="row" layout-align="center center">
+							<h2 class="md-display-1">No activation(s) submitted through RP2.0</h2>
+						</div>
+						<div layout="row" layout-align="center center">
+							<p class="md-title">Was this site approved through the old report portal? Submit a pre-approved copy <a ng-click="preApprove()" href="#">here</a></p>
+						</div>
+					</div>
+					<span flex="15"></span>
+				</div>
+
+				<div style="height:48px"></div>
+			</div>
+		</md-tab>
+		<md-tab label="ADJUSTMENTS" ng-if="canDoAdjustments == true || permissionLevel == 10">
+			<md-toolbar ng-if="activations[0].activation.approvedBy != null" ng-style="{'max-height': '32px', 'min-height': '32px'}" md-colors="{'background-color': '{{theme}}-primary-A100'}">
+				<div class="md-toolbar-tools" layout="row" layout-align="center center" md-colors="{'color': 'grey-A100'}">
+					<p class="md-subhead no-margin">
+						Room: {{site.siteName}} ({{site.siteNumber}}) | System: {{system.name}}
+					</p>
+				</div>
+			</md-toolbar>
+			<div layout="row" layout-align="center center" layout-padding flex ng-repeat="adjustment in adjustments">
+				<span flex-gt-sm="25" flex-sm="10" flex-xs="10"></span>
+
+				<!-- Desktop adjustment view -->
+				<div hide-xs layout="row" md-colors="{'background-color': 'grey-A100'}" md-whiteframe flex>
+					<div layout="column" layout-align="center center" flex>
+						<div layout="column" style="width:100%;" layout-align="center center">
+							<table class="adjustment-table">
+								<tr class="md-subhead">
+									<td>Submitted:</td>
+									<td class="siteStatus">{{adjustment.submissionDate | date:'short'}}<br />by {{adjustment.submittedBy}}</td>
+								</tr>
+								<tr class="md-subhead">
+									<td>Completed:</td>
+									<td class="siteStatus" ng-if="adjustment.completed">
+										{{adjustment.completedDate | date:'short'}}
+									</td>
+									<td class="siteStatus" ng-if="!adjustment.completed">
+										Pending
+									</td>
+								</tr>
+								<tr class="md-subhead">
+									<td>Restart Time:</td>
+									<td class="siteStatus">{{adjustment.restartTime | date:'short'}}</td>
+								</tr>
+							</table>
+							<p style="font-size:12px;margin:0;width:100%">Notes:</p>
+							<p style="font-size:10px;width:100%;">{{adjustment.notes}}</p>
+						</div>
+					</div>
+					<md-divider></md-divider>
+					<div layout="column" layout-align="center center" flex>
+						<p class="md-headline" ng-style="{'color': getAdjustmentType(adjustment.type)}">{{getAdjustmentText(adjustment)[0]}}</p>
+						<p class="md-headline" ng-style="{'color': getAdjustmentType(adjustment.type)}">{{getAdjustmentText(adjustment)[1]}}</p>
+					</div>
+					<md-divider></md-divider>
+					<div layout="column" layout-align="center center" flex>
+						<p class="md-subhead" style="margin:0">Week</p>
+						<p class="siteStatus" md-colors="{'background-color': '{{getAdjustmentColor(adjustment.weekPercent)}}' }" style="max-width:none;padding:0 2px">
+							{{adjustment.weekMoneyIn | currency}}/{{adjustment.weekMoneyOut | currency}}<br />{{adjustment.weekHold | currency}}/{{adjustment.weekPercent | percentage:2}}</p>
+						<p class="md-subhead" style="margin:1rem 0 0 0">Month</p>
+						<p class="siteStatus" md-colors="{'background-color': '{{getAdjustmentColor(adjustment.monthPercent)}}' }" style="max-width:none;padding:0 2px">
+							{{adjustment.monthMoneyIn | currency}}/{{adjustment.monthMoneyOut | currency}}<br />{{adjustment.monthHold | currency}}/{{adjustment.monthPercent | percentage:2}}
+						</p>
+						<md-button ng-disabled="authUserId != adjustment.submittedById && permissionLevel != 10" ng-click="deleteAdjustment(adjustment)" class="md-raised md-warn">Delete</md-button>
+					</div>
+				</div>
+
+				<!-- Mobile adjustment view -->
+				<div hide show-xs flex layout="column" md-colors="{'background-color': 'grey-A100'}" md-whiteframe>
+					<div layout="column" layout-align="center center">
+						<table class="adjustment-table">
+							<tr class="md-subhead">
+								<td>Submitted:</td>
+								<td class="siteStatus">{{adjustment.submissionDate | date:'short'}}<br />by {{adjustment.submittedBy}}</td>
+							</tr>
+							<tr class="md-subhead">
+								<td>Completed:</td>
+								<td class="siteStatus" ng-if="adjustment.completed">
+									{{adjustment.completedDate | date:'short'}}
+								</td>
+								<td class="siteStatus" ng-if="!adjustment.completed">
+									Pending
+								</td>
+							</tr>
+							<tr class="md-subhead">
+								<td>Restart Time:</td>
+								<td class="siteStatus">{{adjustment.restartTime | date:'short'}}</td>
+							</tr>
+						</table>
+						<p style="font-size:12px;margin:0;width:100%">Notes:</p>
+						<p style="font-size:10px;width:100%;">{{adjustment.notes}}</p>
+					</div>
+					<md-divider></md-divider>
+					<div layout="column" layout-align="center center">
+						<p ng-if="adjustment.type != -1" class="md-headline" ng-style="{'color': getAdjustmentType(adjustment.type)}">
+							{{adjustment.size == 0 ? 'Small' : (adjustment.size == 1 ? 'Medium' : 'Large')}}
+							{{adjustment.type == 0 ? 'Increase' : 'Decrease'}}
+						</p>
+						<p ng-if="adjustment.type == -1" class="md-headline" ng-style="{'color': getAdjustmentType(adjustment.type)}">
+							Full Reset
+						</p>
+					</div>
+					<div layout="column" layout-align="center center">
+						<div layout="row">
+							<div layout="column" style="margin:0 8px">
+								<p class="md-subhead" style="margin:0">Week</p>
+								<p class="siteStatus" md-colors="{'background-color': '{{getAdjustmentColor(adjustment.weekPercent)}}' }" style="max-width:none;padding:0 2px">
+									{{adjustment.weekMoneyIn | currency}}/{{adjustment.weekMoneyOut | currency}}<br />{{adjustment.weekHold | currency}}/{{adjustment.weekPercent | percentage:2}}
+								</p>
+							</div>
+							<div layout="column" style="margin:0 8px">
+								<p class="md-subhead" style="margin:0">Month</p>
+								<p class="siteStatus" md-colors="{'background-color': '{{getAdjustmentColor(adjustment.monthPercent)}}' }" style="max-width:none;padding:0 2px">
+									{{adjustment.monthMoneyIn | currency}}/{{adjustment.monthMoneyOut | currency}}<br />{{adjustment.monthHold | currency}}/{{adjustment.monthPercent | percentage:2}}
+								</p>
+							</div>
+						</div>
+						<br />
+						<div layout="row">
+							<md-button ng-disabled="authUserId != adjustment.submittedById && permissionLevel != 10" ng-click="deleteAdjustment(adjustment)" class="md-raised md-warn">Delete</md-button>
+						</div>
+					</div>
+				</div>
+
+				<span flex-gt-sm="25" flex-sm="10" flex-xs="10"></span>
+			</div>
+
+			<!-- Request Adjustment -->
+			<div layout="row" layout-align="center center" layout-padding flex>
+				<span flex-sm="10" flex-xs="10" flex-gt-sm="25"></span>
+
+				<div layout="column" md-whiteframe md-colors="{'background-color': 'grey-A100'}" flex>
+					<div layout="row" layout-align="center center">
+						<p hide-xs hide-sm class="md-display-1">Request Adjustment</p>
+						<p class="md-headline" hide show-xs show-sm>Request Adjustment</p>
+					</div>
+					<div layout="row" layout-align="center center">
+						<md-select flex-gt-xs="80" placeholder="Adjustment Type" ng-model="adjustment.type" ng-change="adjustTypeChanged()" style="margin-bottom:0">
+							<md-option ng-repeat="at in adjustmentTypes" ng-value="at.type">{{at.name}}</md-option>
+						</md-select>
+					</div>
+					<div layout="row" style="margin-bottom:26px">
+						<span flex="10"></span>
+						<div class="hint">{{adjustment.type.description}}</div>
+						<span flex="10"></span>
+					</div>
+					<div layout="row">
+						<span flex="5"></span>
+						<div layout="column">
+							<md-checkbox ng-disabled="disableReset" ng-model="adjustment.resetRequest">Full Reset</md-checkbox>
+						</div>
+					</div>
+					<div layout="row" layout-align="center center">
+						<span flex="5"></span>
+						<md-input-container flex>
+							<label>Notes</label>
+							<textarea ng-model="adjustment.notes" rows="3"></textarea>
+						</md-input-container>
+						<span flex="5"></span>
+					</div>
+					<div layout="column" layout-align="center center">
+						<h6 class="no-margin">Restart Time</h6>
+						<div layout-gt-xs="row" layout-xs="column">
+							<div style="margin-top:15px;">
+								<md-datepicker ng-model="adjustment.restartDate"></md-datepicker>
+							</div>
+							<span flex-gt-xs="10"></span>
+							<md-input-container>
+								<label></label>
+								<input type="time" ng-model="adjustment.restartTime" />
+							</md-input-container>
+						</div>
+					</div>
+					<div layout="row">
+						<span flex></span>
+						<md-button class="md-raised" ng-click="close()">Close</md-button>
+						<md-button class="md-primary md-raised" ng-click="submitAdjustment()">Submit</md-button>
+					</div>
+				</div>
+
+				<span flex-sm="10" flex-xs="10" flex-gt-sm="25"></span>
+			</div>
+		</md-tab>
+		<md-tab label="PLAYER PIN" ng-if="canDoAdjustments || permissionLevel == 10">
+			<!-- Player pin adjustments -->
+			<div layout="row" layout-align="center center" layout-padding flex ng-repeat="pin in playerPins">
+				<span flex-gt-sm="25" flex-sm="10" flex-xs="10"></span>
+				<div layout="row" md-colors="{'background-color': 'grey-A100'}" md-whiteframe flex>
+					<div flex layout="column" layout-align="center center">
+						<table class="adjustment-table">
+							<tr class="md-subhead">
+								<td>Submitted:</td>
+								<td class="siteStatus">{{pin.submissionDate | date:'short'}}<br />by {{pin.submittedByName}}</td>
+							</tr>
+							<tr class="md-subhead">
+								<td>Claimed:</td>
+								<td ng-if="pin.claimedBy" class="siteStatus">{{pin.claimedDate | date:'short'}}<br />by {{pin.claimedByName}}</td>
+								<td ng-if="!pin.claimedBy" class="siteStatus">Pending</td>
+							</tr>
+							<tr class="md-subhead">
+								<td>Completed:</td>
+								<td ng-if="pin.completedTime" class="siteStatus">{{pin.completedTime | date:'short'}}</td>
+								<td ng-if="!pin.completedTime" class="siteStatus">Pending</td>
+							</tr>
+						</table>
+
+						<p style="font-size:12px;margin:0;width:100%">Notes:</p>
+						<p style="font-size:10px;width:100%;">{{pin.notes}}</p>
+					</div>
+					<md-divider></md-divider>
+					<div flex layout="column" layout-align="center center">
+						<p class="md-headline" style="margin:1rem 0 0 0">{{pin.typeName}}</p>
+						<h3 class="md-headline">{{pin.amount | currency}}</h3>
+						<h3 class="md-subhead"><span style="font-size:12px">Card # </span>{{pin.cardNumber}}</h3>
+					</div>
+					<md-divider></md-divider>
+					<div flex layout="column" layout-align="center center">
+						<md-button class="md-raised md-primary" ng-disabled="getPlayerPinDisabled(pin)" ng-click="playerPinClicked(pin, $event)">{{getPlayerPinText(pin)}}</md-button>
+						<md-button class="md-raised md-warn" ng-if="pin.completedTime == null" ng-click="deletePin(pin, $event)">Delete</md-button>
+					</div>
+				</div>
+				<span flex-gt-sm="25" flex-sm="10" flex-xs="10"></span>
+			</div>
+
+			<!-- Request Adjustment -->
+			<div layout="row" layout-align="center center" layout-padding flex>
+				<span flex-sm="10" flex-xs="10" flex-gt-sm="25"></span>
+
+				<div layout="column" md-whiteframe md-colors="{'background-color': 'grey-A100'}" flex>
+					<div layout="row" layout-align="center center">
+						<p hide-xs hide-sm class="md-display-1">Player Pin Adjustment</p>
+						<p class="md-headline" hide show-xs show-sm>Player Pin Adjustment</p>
+					</div>
+					<div layout-gt-sm="row" layout-sm="column" layout-xs="column" layout-align="center center">
+						<span flex-gt-sm="5"></span>
+						<md-input-container flex-gt-xs>
+							<label>Amount</label>
+							<input type="number" ng-model="request.amount" />
+						</md-input-container>
+						<span flex-gt-sm="5"></span>
+						<md-input-container flex-gt-xs>
+							<label>Card Number</label>
+							<input type="text" ng-model="request.cardNumber" />
+						</md-input-container>
+						<span flex-gt-sm="5"></span>
+					</div>
+					<div layout-gt-xs="row">
+						<span flex="5"></span>
+						<md-radio-group ng-model="request.side">
+							<md-radio-button ng-value="9">Playable</md-radio-button>
+							<md-radio-button ng-value="10">Cashable</md-radio-button>
+						</md-radio-group>
+						<span flex="5"></span>
+					</div>
+					<div layout-gt-sm="row" layout-sm="column" layout-xs="column" layout-align="center center">
+						<span flex-gt-sm="5"></span>
+						<md-input-container flex>
+							<label>Notes</label>
+							<textarea rows="3" ng-model="request.notes"></textarea>
+						</md-input-container>
+						<span flex-gt-sm="5"></span>
+					</div>
+					<div layout="row">
+						<span flex></span>
+						<md-button class="md-raised" ng-click="close()">Close</md-button>
+						<md-button class="md-primary md-raised" ng-click="submitPlayerAdjustment()">Submit</md-button>
+					</div>
+				</div>
+
+				<span flex-sm="10" flex-xs="10" flex-gt-sm="25"></span>
+			</div>
+		</md-tab>
+		<md-tab label="PLAYER BALANCES" ng-if="permissionLevel >= 2">
+			<md-content layout="row" style="overflow:visible" layout-align="center center" md-colors="::{'background': 'blue-grey-100'}">
+				<span flex="10"></span>
+				<div layout="column" md-colors="::{'background': 'grey-A100'}" layout-fill flex md-whiteframe="4">
+					<div>
+						<!-- Title -->
+						<div layout-padding layout="row" layout-align="center center">
+							<p class="md-display-1">Modify Players</p>
+						</div>
+						<div layout="row" layout-align="center center">
+							<p class="md-title">Last Updated: {{site.lastPlayerUpdate | date:'short'}}</p>
+						</div>
+						<br /><br />
+						<!-- Filters -->
+						<div layout="row">
+							<span flex></span>
+							<md-input-container style="margin: 0 0; padding: 2px 16px 2px 2px;">
+								<lable>Search</lable>
+								<input aria-label="search-box" ng-model="filter.searchText" />
+							</md-input-container>
+						</div>
+					</div>
+					<div layout="column">
+						<md-data-table-container style="overflow:auto">
+							<table data-md-table data-md-row-select="rowSelected" ng-model="selected">
+								<thead md-head data-md-order="query.order" md-on-reorder="onReorder">
+									<tr md-row>
+										<th style="padding:0 24px;" md-column md:order:by="cardNumber">Card ID</th>
+										<th flex md-column md:order:by="name"><span flex>Name</span></th>
+										<th flex md-column md:order:by="email"><span flex>Email</span></th>
+										<th flex md-column md:order:by="cashableBalance"><span>Cashable Balance</span></th>
+										<th flex md-column md:order:by="playableBalance"><span>Playable Balance</span></th>
+									</tr>
+								</thead>
+								<tbody md-body>
+									<tr md-row md-select="editUser" md-select-id="name" ng-repeat="player in players | filter: filter.searchText | orderBy: query.order | limitTo: query.limit : (query.page - 1) * query.limit" md-colors="{'background-color': ($index % 2 == 0 ? '{{theme}}-primary-50' : 'grey-A100')}">
+										<td style="padding:0;" md-cell><md-button style="padding:0;" ng-click="playerBalanceClicked(player, $event)" class="md-raised md-primary">{{player.cardNumber}}</md-button></td>
+										<td md-cell>{{player.name}}</td>
+										<td md-cell>{{player.email}}</td>
+										<td md-cell>{{player.cashableBalance | currency}}</td>
+										<td md-cell>{{player.playableBalance | currency}}</td>
+									</tr>
+								</tbody>
+							</table>
+						</md-data-table-container>
+						<md-table-pagination md-colors="{'background-color': '{{theme}}-primary'}" style="height:28px; min-height:28px;" md-limit="query.limit" md-limit-options="limitOptions" md-page="query.page" md-total="{{::players.length}}" md-page-select="options.pageSelect" md-boundary-links="options.boundaryLinks"></md-table-pagination>
+					</div>
+				</div>
+				<span flex="10"></span>
+			</md-content>
+			<br />
+		</md-tab>
+	</md-tabs>
+</md-content>

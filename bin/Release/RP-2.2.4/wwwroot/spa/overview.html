@@ -1,0 +1,361 @@
+<div resize layout-fill ng-cloak>
+	<md-toolbar ng-if="showBulkActions" class="bulk-actions" md-colors="{'background-color': '{{theme}}-primary-A200'}">
+		<div class="md-toolbar-tools bulk-actions" layout="row" layout-align="center center">
+			<button ng-click="bulkAdjustment($event)">Submit Bulk Adjustments</button>
+			<span flex="5"></span>
+			<button ng-click="bulkSetDistributor($event)">Set Distributors</button>
+		</div>
+	</md-toolbar>
+	<md-content ng-if="width >= 1024" layout="row" layout-align="center center" md-colors="::{'background': 'blue-grey-100'}">
+		<!-- Desktop view / larger mobile devices -->
+		<span flex="5"></span>
+
+		<!-- White "card" -->
+		<div layout="column" md-colors="::{'background': 'grey-A100'}" layout-fill flex md-whiteframe="4">
+			<div layout="column">
+				<!-- Title -->
+				<div layout-padding layout="row">
+					<span flex></span>
+					<p class="md-display-1">Report Management</p>
+					<span flex></span>
+				</div>
+				<div layout="row">
+					<span flex></span>
+					<!-- Quick reports -->
+					<div layout="column">
+						<span style="text-align: center;" class="md-headline">Quick Reports</span>
+						<div layout="row">
+							<div layout="column">
+								<md-list>
+									<md-list-item ng-click="::quickReport(0)">
+										<md-icon class="md-primary md-hue-2" md-svg-icon="date-range"></md-icon>
+										<p>Weekly Report</p>
+									</md-list-item>
+									<md-list-item ng-click="::quickReport(1)">
+										<md-icon class="md-primary md-hue-2" md-svg-icon="date-range"></md-icon>
+										<p>Monthly Report</p>
+									</md-list-item>
+								</md-list>
+							</div>
+							<div layout="column">
+								<md-list>
+									<md-list-item ng-click="::quickReport(2)">
+										<md-icon class="md-primary md-hue-2" md-svg-icon="date-range"></md-icon>
+										<p>Quarterly Report</p>
+									</md-list-item>
+									<md-list-item ng-click="::quickReport(3)">
+										<md-icon class="md-primary md-hue-2" md-svg-icon="date-range"></md-icon>
+										<p>Yearly Report</p>
+									</md-list-item>
+								</md-list>
+							</div>
+						</div>
+						<div layout="row">
+							<md-list-item ng-click="::quickReport(5)" flex>
+								<md-icon class="md-primary md-hue-2" md-svg-icon="money"></md-icon>
+								<p>Previous Billing Week</p>
+							</md-list-item>
+						</div>
+						<div layout="row">
+							<md-list-item ng-click="::quickReport(4)" flex>
+								<md-icon class="md-primary md-hue-2" md-svg-icon="money"></md-icon>
+								<p>Current Billing Week</p>
+							</md-list-item>
+						</div>
+					</div>
+					<span flex></span>
+					<!-- Custom Report -->
+					<div layout="column">
+						<span flex class="md-headline" style="text-align: center;">Custom Report</span><br /><br />
+						<div layout="row">
+							<div layout="column">
+								<md-input-container style="margin: 18px 0 0 0;">
+									<label>Start Date</label>
+									<md-datepicker md-max-date="filter.dateRange.end" ng-model="filter.dateRange.start"></md-datepicker>
+								</md-input-container>
+								<md-input-container ng-if="timeSupported" style="margin-left: 32px;margin-bottom:0;">
+									<label>Start Time</label>
+									<mdp-time-picker style="color: black;" ng-model="filter.dateRange.startTime"></mdp-time-picker>
+								</md-input-container>
+								<md-input-container ng-if="!timeSupported">
+									<label>Start Time</label>
+									<input id="start-time" ng-model="filter.dateRange.manualStartTime" />
+								</md-input-container>
+							</div>
+							<div layout="column">
+								<md-input-container style="margin: 18px 0 0 0;">
+									<label>End Date</label>
+									<md-datepicker md-min-date="filter.dateRange.start" md-max-date="::today" ng-model="filter.dateRange.end"></md-datepicker>
+								</md-input-container>
+								<md-input-container ng-if="timeSupported" style="margin-left: 32px;margin-bottom:0;">
+									<label>End Time</label>
+									<mdp-time-picker style="color: black;" ng-model="filter.dateRange.endTime"></mdp-time-picker>
+								</md-input-container>
+								<md-input-container ng-if="!timeSupported">
+									<label>End Time</label>
+									<input id="end-time" ng-model="filter.dateRange.manualEndTime" />
+								</md-input-container>
+							</div>
+						</div>
+						<div layout="row">
+							<span flex></span>
+							<md-button class="md-primary md-raised" md-colors="{'background-color': canGenerateReport ? '{{theme}}-primary' : '{{theme}}-warn'}"
+									   style="height:48px;padding:0 12px;margin:0 6px" ng-disabled="filter.disableReports" ng-click="::generateReport()">{{canGenerateReport ? "Generate Report" : "Loading..."}}</md-button>
+							<md-button style="width:48px;height:48px;border-radius:2px;"
+									   class="md-icon-button md-primary md-raised" ng-click="::printReport()" aria-label="print">
+								<md-tooltip md-direction="bottom">Print Report</md-tooltip>
+								<md-icon md-svg-icon="print"></md-icon>
+							</md-button>
+							<md-button style="width:48px;height:48px;border-radius:2px;pointer-events: auto;"
+									   class="md-icon-button md-primary md-raised" ng-disabled="!reportGenerated" ng-click="::downloadReport()" aria-label="download">
+								<md-tooltip md-direction="bottom">Download Report Spreadsheet</md-tooltip>
+								<md-icon md-svg-icon="download"></md-icon>
+							</md-button>
+						</div>
+					</div>
+					<span flex></span>
+				</div>
+				<br />
+				<div layout="row">
+					<span flex></span>
+					<md-select ng-if="systems.length > 2" placeholder="Filter Systems" ng-model="filter.selectedSystem" style="margin-top:8px;" ng-change="systemFilterChanged()">
+						<md-option ng-repeat="sys in systems" ng-value="sys.name">{{sys.name}} {{sys.prefix ? "(" + sys.prefix + ")" : ""}}</md-option>
+					</md-select>
+					<span flex="5"></span>
+					<md-input-container style="margin:6px 12px -12px 0;">
+						<label>Search</label>
+						<input ng-model="filter.searchText" />
+					</md-input-container>
+				</div>
+			</div>
+			<md-divider></md-divider>
+			<!-- Report -->
+			<div flex layout="column">
+				<md-data-table-container md-whiteframe="4" id="tableWrapper" style="overflow:auto;">
+					<table md-table md-row-select="rowSelected" ng-model="selected">
+						<thead md-head md-order="query.order">
+							<tr md-row>
+								<th name="checkBox" md-column><md-checkbox aria-label="SelectSites" ng-model="filter.checkAll" ng-change="checkAllFilter()"></md-checkbox></th>
+								<th name="siteNumber" style="padding:0 24px;" md-column md:order:by="siteNumber">ID</th>
+								<th name="distributor" md-column md:order:by="distributor">Distributor</th>
+								<th name="systemName" flex md-column md:order:by="systemName">System</th>
+								<th name="siteName" flex md-column md:order:by="siteName"><span>Name</span></th>
+								<th name="lastAdjustment" md-column md:order:by="lastAdjustment">Last Adjust</th>
+								<th name="moneyIn" md-column md-numeric md-order-by="moneyIn" style="text-align: right;">In</th>
+								<th name="moneyOut" md-column md-numeric md-order-by="moneyOut" style="text-align: right;">Out</th>
+								<th name="moneyHold" md-column md-numeric md-order-by="moneyHold" style="text-align: right;">Hold</th>
+								<th name="moneyPercent" md-column md-numeric md-order-by="moneyPercent" style="text-align: right;">%</th>
+							</tr>
+						</thead>
+						<tbody md-body id="tableBody">
+							<tr md-row md-select="reportSite" md-select-id="name"
+								ng-repeat="s in sites | filter: filter.searchText | orderBy: query.order | limitTo: query.limit : (query.page - 1) * query.limit"
+								md-colors="{'background-color': ($index % 2 == 0 ? '{{theme}}-primary-50' : 'grey-A100')}">
+								<td name="checkBox" md-cell><md-checkbox aria-label="SiteSelected" ng-model="s.checkBox" ng-change="siteFilterChecked()"></md-checkbox></td>
+								<td name="siteNumber" style="padding:0;" md-cell><a class="anchor-button" md-colors="{'background-color': '{{theme}}-primary', 'color': 'grey-A100'}" href="/site/{{s.id}}">{{s.systemPrefix + s.siteNumber}}</a></td>
+								<td name="distributor" md-cell>{{s.distributor}}</td>
+								<td name="systemName" md-cell>
+									<div layout="column">
+										{{s.systemName}}
+										<p class="siteStatus" ng-style="{'background-color': getSiteStatusColor(s.siteLastPing)}">{{s.siteLastPing | date:'short'}}</p>
+									</div>
+								</td>
+								<td name="siteName" md-cell>{{::s.siteName}}</td>
+								<td name="lastAdjustment" md-cell>{{::s.adjustmentType}}</td>
+								<td name="moneyIn" md-cell style="text-align: right;">{{reportGenerated ? (s.moneyIn | currency) : "-"}}</td>
+								<td name="moneyOut" md-cell style="text-align: right;">{{reportGenerated ? (s.moneyOut | currency) : "-"}}</td>
+								<td name="moneyHold" md-cell style="text-align: right;">{{reportGenerated ? (s.moneyHold | currency) : "-"}}</td>
+								<td name="moneyPercent" md-cell style="text-align: right;" md-colors="{'color': getPercentColor((s.moneyIn - s.moneyOut) / s.moneyIn)}">{{reportGenerated ? (s.moneyPercent | percentage:2) : "-"}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</md-data-table-container>
+				<md-table-pagination md-whiteframe="4" md-colors="{'background-color': '{{theme}}-primary'}" style="height:28px; min-height:28px;" md-limit="query.limit" md-limit-options="limitOptions" md-page="query.page" md-total="{{sites.length}}" md-page-select="options.pageSelect" md-boundary-links="options.boundaryLinks"></md-table-pagination>
+			</div>
+		</div>
+		<span flex="5"></span>
+	</md-content>
+	<div ng-if="width < 1024">
+		<!-- Mobile view -->
+		<div flex layout="column" layout-align="start center" md-colors="{'background-color': 'grey-A100'}">
+			<div flex layout="row">
+				<span flex></span><h1>Report Portal</h1><span flex></span>
+			</div><br /><br /><br />
+			<md-tabs md-selected="tabs.index" md-dynamic-height style="width:100%;">
+				<md-tab label="QUICK REPORTS">
+					<div layout="column">
+						<md-list>
+							<md-list-item ng-click="::quickReport(0)">
+								<md-icon class="md-primary md-hue-2" md-svg-icon="date-range"></md-icon>
+								<p>Weekly Report</p>
+							</md-list-item>
+							<md-list-item ng-click="::quickReport(1)">
+								<md-icon class="md-primary md-hue-2" md-svg-icon="date-range"></md-icon>
+								<p>Monthly Report</p>
+							</md-list-item>
+							<md-list-item ng-click="::quickReport(2)">
+								<md-icon class="md-primary md-hue-2" md-svg-icon="date-range"></md-icon>
+								<p>Quarterly Report</p>
+							</md-list-item>
+							<md-list-item ng-click="::quickReport(3)">
+								<md-icon class="md-primary md-hue-2" md-svg-icon="date-range"></md-icon>
+								<p>Yearly Report</p>
+							</md-list-item>
+							<md-list-item ng-click="::quickReport(5)" flex>
+								<md-icon class="md-primary md-hue-2" md-svg-icon="money"></md-icon>
+								<p>Previous Billing Week</p>
+							</md-list-item>
+							<md-list-item ng-click="::quickReport(4)" flex>
+								<md-icon class="md-primary md-hue-2" md-svg-icon="money"></md-icon>
+								<p>Current Billing Week</p>
+							</md-list-item>
+						</md-list>
+					</div>
+				</md-tab>
+				<md-tab label="CUSTOM REPORT">
+					<div style="margin-top:15px;" class="customReportWrapper" layout="row">
+						<p style="padding-top:15px">Start Date</p>
+						<span flex></span>
+						<md-input-container style="margin: 18px 0 0 0;">
+							<label>Start Date</label>
+							<md-datepicker md-max-date="filter.dateRange.end" ng-model="filter.dateRange.start"></md-datepicker>
+						</md-input-container>
+					</div>
+					<div ng-if="timeSupported" class="customReportWrapper" layout="row">
+						<p style="padding-top:15px">Start Time</p>
+						<span flex></span>
+						<md-input-container style="margin: 18px 0 0 0;">
+							<label>Start Time</label>
+							<input id="material-start-time" style="-webkit-min-logical-width: 100px;" type="time" ng-model="filter.dateRange.startTime" />
+						</md-input-container>
+					</div>
+					<div ng-if="!timeSupported" class="customReportWrapper" layout="row">
+						<p>Start Time</p>
+						<span flex></span>
+						<input type="text" id="mobile-start-time" />
+					</div>
+					<div class="customReportWrapper" layout="row">
+						<p style="padding-top:15px">End Date</p>
+						<span flex></span>
+						<md-input-container style="margin: 18px 0 0 0;">
+							<label>End Date</label>
+							<md-datepicker md-min-date="filter.dateRange.start" md-max-date="::today" ng-model="filter.dateRange.end"></md-datepicker>
+						</md-input-container>
+					</div>
+					<div ng-if="timeSupported" class="customReportWrapper" layout="row">
+						<p style="padding-top:15px">End Time</p>
+						<span flex></span>
+						<md-input-container style="margin: 18px 0 0 0;">
+							<label>End Time</label>
+							<input id="material-end-time" style="-webkit-min-logical-width: 100px;" type="time" ng-model="filter.dateRange.endTime" />
+						</md-input-container>
+					</div>
+					<div ng-if="!timeSupported" class="customReportWrapper" layout="row">
+						<p>End Time</p>
+						<span flex></span>
+						<input type="text" id="mobile-end-time" />
+					</div>
+					<div layout="row" layout-align="center center">
+						<md-button class="md-primary md-raised" md-colors="{'background-color': canGenerateReport ? '{{theme}}-primary' : '{{theme}}-warn'}"
+								   ng-disabled="filter.disableReports" ng-click="::generateReport()">{{canGenerateReport ? "Generate Report" : "Loading..."}}</md-button>
+					</div>
+				</md-tab>
+			</md-tabs><br />
+			<div layout="column">
+				<md-select id="filterSystemSelect" placeholder="Filter Systems" ng-model="filter.selectedSystem" style="margin-top:8px;" ng-change="systemFilterChanged()">
+					<md-option ng-repeat="sys in systems" ng-value="sys.name">{{sys.name}}</md-option>
+				</md-select>
+			</div>
+		</div>
+		<md-divider></md-divider>
+		<div layout="column">
+			<div style="min-height: 27px;" layout="row" flex md-colors="{'background-color': '{{theme}}-primary'}">
+				<md-input-container style="margin:-4px 0 0 0;" flex>
+					<label>Search</label>
+					<input ng-model="filter.searchText" ng-change="::searchQueryChanged()" />
+				</md-input-container>
+			</div>
+			<div ng-click="toggleReport(s.id)" layout="row" flex layout-align="start center" class="mobile-site-view" md-colors="{'background-color': 'grey-A100'}" ng-repeat-start="s in sites | orderBy: query.order | filter: filter.searchText | limitTo: query.limit : (query.page - 1) * query.limit">
+				<!--| limitTo: query.limit : (query.page - 1) * query.limit-->
+				<md-icon style="min-height:12px;height:12px;" md-colors="{'color': getSiteStatusColor(s.siteLastPing)}" md-svg-icon="status-icon"></md-icon>
+				<p class="md-body-2">{{s.siteName}}</p>
+				<span flex></span>
+				<p ng-if="s.moneyPercent != 0 && s.moneyPercent != null" class="md-body-2" md-colors="::{'color': getPercentColor(s.moneyPercent)}">{{s.moneyPercent | percentage:2}}</p>
+				<p ng-if="s.moneyPercent == 0 || s.moneyPercent == null" class="md-body-2">-</p>
+				<span flex="5"></span>
+			</div>
+			<div ng-click="toggleReport(s.id)" id="report{{s.id}}" class="site_report" md-colors="{'background-color': 'grey-A100'}">
+				<div layout="row" flex>
+					<span flex="5"></span>
+					<p style="font-size:12px">Last Ping: {{s.siteLastPing | date:'short'}} from {{s.siteLastIp}}</p>
+					<span flex="5"></span>
+				</div>
+				<div layout="row" flex>
+					<span flex="5"></span>
+					<md-input-container style="margin-bottom:0px;" flex="25">
+						<label>ID</label>
+						<input md-colors="{'color': '{{theme}}-primary'}" disabled ng-model="s.siteNumber" />
+					</md-input-container>
+					<span flex="5"></span>
+					<md-input-container class="pseudo-disabled" style="margin-bottom:0px;" flex>
+						<label>Distributor</label>
+						<input disabled ng-model="s.distributor" />
+					</md-input-container>
+					<span flex="5"></span>
+				</div>
+				<div layout="row" flex>
+					<span flex="5"></span>
+					<md-input-container class="pseudo-disabled" style="margin-bottom:0;" flex>
+						<label>System</label>
+						<input disabled ng-model="s.systemName" />
+					</md-input-container>
+					<md-input-container class="pseudo-disabled" style="margin-bottom:0;" flex>
+						<label>Name</label>
+						<input disabled ng-model="s.siteName" />
+					</md-input-container>
+					<span flex="5"></span>
+				</div>
+				<div layout="row" flex>
+					<span flex="5"></span>
+					<md-input-container style="margin-bottom:0;" flex>
+						<label>In</label>
+						<input ng-style="{'color': s.moneyIn >= 0 ? 'green' : 'red'}" disabled ng-model="s.moneyIn" format="currency" />
+					</md-input-container>
+					<md-input-container style="margin-bottom:0;" flex>
+						<label>Out</label>
+						<input ng-style="{'color': s.moneyOut >= 0 ? 'green' : 'red'}" disabled ng-model="s.moneyOut" format="currency" />
+					</md-input-container>
+					<span flex="5"></span>
+				</div>
+				<div layout="row" flex>
+					<span flex="5"></span>
+					<md-input-container flex>
+						<label>Hold</label>
+						<input ng-style="{'color': s.moneyHold >= 0 ? 'green' : 'red'}" disabled style="margin-bottom:0" ng-model="s.moneyHold" format="currency" />
+					</md-input-container>
+					<md-input-container style="margin-bottom:0" flex="20">
+						<label>%</label>
+						<input ng-style="{'color': s.moneyPercent >= 0 ? 'green' : 'red'}" disabled ng-model="s.moneyPercent" format="percentage" />
+					</md-input-container>
+					<span flex="5"></span>
+				</div>
+				<div layout="row" flex>
+					<span flex></span>
+					<a class="anchor-button" href="/site/{{s.id}}" md-colors="{'background-color': '{{theme}}-primary', 'color': 'grey-A100'}">Full Info</a>
+				</div>
+			</div>
+			<md-divider ng-repeat-end></md-divider>
+			<div style="min-height: 27px;" layout="row" flex md-colors="{'background-color': '{{theme}}-primary'}">
+				<span flex="5"></span>
+				<p style="margin:7px 0 0 0;" class="md-caption">Rows per page:</p><span flex="5"></span>
+				<md-select class="md-table-select" ng-model="query.limit">
+					<md-option ng-repeat="value in limitOptions" ng-value="value.value || value">{{value.label || value}}</md-option>
+				</md-select><span flex="5"></span>
+				<p style="margin:7px 0 0 0;" class="md-caption">{{1 + ((query.page - 1) * query.limit)}} - {{query.limit * query.page < sites.length ? query.limit * query.page : sites.length}} of {{sites.length}}</p>
+				<md-icon md-svg-icon="navigate-before.svg" class="ng-scope md-{{theme}}-theme" aria-hidden="true" ng-click="previous()"></md-icon>
+				<md-icon md-svg-icon="navigate-next.svg" class="ng-scope md-{{theme}}-theme" aria-hidden="true" ng-click="next()"></md-icon>
+				<span flex="5"></span>
+			</div>
+		</div>
+	</div>
+</div>

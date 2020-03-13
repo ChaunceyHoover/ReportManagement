@@ -1,0 +1,218 @@
+<md-content ng-cloak layout-fill>
+	<div layout="row" layout-align="center center" layout-padding hide-xs flex>
+		<span flex="25"></span>
+		<div layout="column" flex md-colors="{'background-color': 'grey-A100'}" md-whiteframe>
+			<div layout="column" layout-align="start center">
+				<p class="md-headline">User Info</p>
+			</div>
+			<div layout="row">
+				<span flex="10"></span>
+				<md-input-container flex="10">
+					<label>ID</label>
+					<input type="text" ng-model="user.id" disabled />
+				</md-input-container>
+				<span flex="5"></span>
+				<md-input-container flex>
+					<label>Username</label>
+					<input type="text" ng-model="user.userName" disabled />
+				</md-input-container>
+				<span flex="10"></span>
+			</div>
+			<div layout="row">
+				<span flex="10"></span>
+				<md-input-container flex>
+					<label>Permission Level</label>
+					<md-select ng-model="user.level" ng-change="levelChanged()">
+						<md-option ng-repeat="level in levels" ng-value="level.value" ng-disabled="level.label == 'RESERVED'">{{level.label}} ({{level.value}})</md-option>
+					</md-select>
+				</md-input-container>
+				<span flex="5"></span>
+				<div flex>
+					<label>Last Login</label>
+					<md-datepicker ng-if="user.userLastLogin" ng-model="user.userLastLogin" md-placeholder="Enter date" disabled></md-datepicker>
+					<p class="md-body-1" ng-if="user.userLastLogin == null">(Never)</p>
+				</div>
+				<span flex="10"></span>
+			</div>
+			<div layout="row">
+				<span flex="10"></span>
+				<md-input-container flex>
+					<label>First Name</label>
+					<input type="text" ng-model="user.fName" />
+				</md-input-container>
+				<span flex="5"></span>
+				<md-input-container flex>
+					<label>Last Name</label>
+					<input type="text" ng-model="user.lName" />
+				</md-input-container>
+				<span flex="10"></span>
+			</div>
+			<div layout="row">
+				<span flex="10"></span>
+				<md-input-container flex>
+					<label>Contact Email</label>
+					<input type="text" ng-model="user.email" />
+				</md-input-container>
+				<md-input-container flex="17">
+					<label>Contact Number</label>
+					<input type="text" phone-input ng-model="user.phone" />
+				</md-input-container>
+				<span flex="10"></span>
+			</div>
+			<div layout="row" layout-align="center center">
+				<p class="md-title">Site Permission(s)</p>
+			</div>
+			<div layout="row">
+				<span flex="10"></span>
+				<select id="multi_select1" flex style="margin-right:2px;" multiple="multiple">
+					<option id="{{site.siteId}}" ng-repeat="site in sites" ng-if="!site.user_has_access">{{site.siteNumber}} - {{site.siteName}}</option>
+				</select>
+				<select id="multi_select2" flex style="margin-left:2px;" multiple="multiple">
+					<option id="{{site.siteId}}" ng-repeat="site in sites" ng-if="site.user_has_access">{{site.siteNumber}} - {{site.siteName}}</option>
+				</select>
+				<span flex="10"></span>
+			</div>
+			<div layout="row" flex>
+				<span flex></span>
+				<md-button class="md-raised" ng-click="removeSite()">&lt; Remove</md-button>
+				<md-button class="md-raised" ng-click="addSite()">Add &gt;</md-button>
+				<span flex></span>
+			</div><br /><br /><br /><br />
+			<div layout="row">
+				<span flex="10"></span>
+				<md-checkbox ng-model="user.isDistributor" ng-disabled="user.level == 3" ng-change="isDistributorTicked()">Distributor</md-checkbox>
+				<md-checkbox ng-model="user.active">User Enabled</md-checkbox>
+				<span flex="10"></span>
+			</div><br />
+			<div layout="row">
+				<span flex="10"></span>
+				<md-input-container class="md-block" flex>
+					<label>Notes</label>
+					<textarea ng-model="user.notes" md-maxlength="300" rows="2" md-select-on-focus></textarea>
+				</md-input-container>
+				<span flex="10"></span>
+			</div>
+			<div layout="row">
+				<span flex></span>
+				<div class="hint-wrapper">
+					<md-button ng-disabled="!(permissionLevel == 10 || canEditUser)" class="md-raised" ng-click="changePwd($event)">Change Password</md-button>
+					<md-button ng-disabled="!(permissionLevel == 10 || canEditUser)" class="md-raised md-warn" ng-click="deleteUser($event)">Delete</md-button>
+					<md-button ng-disabled="!(permissionLevel == 10 || canEditUser)" class="md-primary md-raised" ng-click="saveInfo()">Save</md-button>
+					<p ng-if="!(permissionLevel == 10 || canEditUser)" class="hint">Access Denied</p>
+				</div>
+			</div>
+		</div>
+		<span flex="25"></span>
+	</div>
+	<div layout="row" layout-align="center center" layout-padding hide show-xs flex>
+		<span flex="5"></span>
+		<div layout="column" flex md-colors="{'background-color': 'grey-A100'}" md-whiteframe>
+			<div layout="column" layout-align="start center">
+				<p class="md-headline">User Info</p>
+			</div>
+			<div layout="row">
+				<span flex="10"></span>
+				<md-input-container style="margin:9px 0 0 0;" flex="10">
+					<label>ID</label>
+					<input type="text" ng-model="user.id" disabled />
+				</md-input-container>
+				<span flex="5"></span>
+				<md-input-container style="margin:9px 0 0 0;" flex>
+					<label>Username</label>
+					<input type="text" ng-model="user.userName" disabled />
+				</md-input-container>
+				<span flex="10"></span>
+			</div>
+			<div layout="row">
+				<span flex="10"></span>
+				<md-input-container style="margin:0;" flex>
+					<label>Permission Level</label>
+					<md-select ng-model="user.level">
+						<md-option ng-repeat="level in levels" ng-value="level.value" ng-disabled="level.label == 'RESERVED'">{{level.label}} ({{level.value}})</md-option>
+					</md-select>
+				</md-input-container>
+			</div><br />
+			<div layout="row">
+				<span flex="10"></span>
+				<div flex>
+					<label>Last Login</label>
+					<md-datepicker ng-if="user.userLastLogin" ng-model="user.userLastLogin" md-placeholder="Enter date" disabled></md-datepicker>
+					<p class="md-body-1" ng-if="user.userLastLogin == null">(Never)</p>
+				</div>
+				<span flex="10"></span>
+			</div><br />
+			<div layout="row">
+				<span flex="10"></span>
+				<md-input-container style="margin:0;" flex>
+					<label>First Name</label>
+					<input type="text" ng-model="user.fName" />
+				</md-input-container>
+				<span flex="5"></span>
+				<md-input-container style="margin:0;" flex>
+					<label>Last Name</label>
+					<input type="text" ng-model="user.lName" />
+				</md-input-container>
+				<span flex="10"></span>
+			</div>
+			<div layout="row">
+				<span flex="10"></span>
+				<md-input-container style="margin:0;" flex>
+					<label>Contact Email</label>
+					<input type="text" ng-model="user.email" />
+				</md-input-container>
+				<span flex="10"></span>
+			</div>
+			<div layout="row">
+				<span flex="10"></span>
+				<md-input-container style="margin:0;" flex>
+					<label>Contact Number</label>
+					<input type="text" phone-input ng-model="user.phone" />
+				</md-input-container>
+				<span flex="10"></span>
+			</div>
+			<div layout="row" layout-align="center center">
+				<p class="md-title">Site Permission(s)</p>
+			</div>
+			<div layout="row">
+				<span flex="10"></span>
+				<select id="multi_select1" flex style="margin-right:2px;" multiple="multiple">
+					<option id="{{site.id}}" ng-repeat="site in sites" ng-if="!site.user_has_access">{{site.siteNumber}} - {{site.siteName}}</option>
+				</select>
+				<select id="multi_select2" flex style="margin-left:2px;" multiple="multiple">
+					<option id="{{site.id}}" ng-repeat="site in sites" ng-if="site.user_has_access">{{site.siteNumber}} - {{site.siteName}}</option>
+				</select>
+				<span flex="10"></span>
+			</div>
+			<div layout="row" flex>
+				<span flex></span>
+				<md-button class="md-raised" ng-click="removeSite()">&lt; Remove</md-button>
+				<md-button class="md-raised" ng-click="addSite()">Add &gt;</md-button>
+				<span flex></span>
+			</div><br /><br /><br /><br />
+			<div layout="row">
+				<span flex="10"></span>
+				<md-checkbox ng-model="user.isDistributor" ng-disabled="user.level != 10 && user.level != 2">Distributor</md-checkbox>
+				<md-checkbox ng-model="user.active">User Enabled</md-checkbox>
+				<span flex="10"></span>
+			</div><br />
+			<div layout="row">
+				<span flex="10"></span>
+				<md-input-container class="md-block" flex>
+					<label>Notes</label>
+					<textarea ng-model="user.notes" md-maxlength="300" rows="2" md-select-on-focus></textarea>
+				</md-input-container>
+				<span flex="10"></span>
+			</div>
+			<div layout="row" ng-if="permissionLevel == 10 || canEditUser">
+				<span flex></span>
+				<md-button class="md-raised" ng-click="changePwd($event)">Change Password</md-button>
+			</div>
+			<div layout="row" ng-if="permissionLevel == 10 || canEditUser">
+				<span flex></span>
+				<md-button class="md-raised md-warn" ng-click="deleteUser()">Delete</md-button>
+				<md-button class="md-raised md-primary" ng-click="saveInfo()">Save</md-button>
+			</div>
+		</div>
+		<span flex="5"></span>
+	</div>
+</md-content>

@@ -1,0 +1,23 @@
+C:\Users\Chaun\Documents\Visual Studio 2017\Projects\ReportManagement\ReportManagement\bin\Release\netcoreapp1.1\ReportManagement.deps.json
+C:\Users\Chaun\Documents\Visual Studio 2017\Projects\ReportManagement\ReportManagement\bin\Release\netcoreapp1.1\ReportManagement.runtimeconfig.json
+C:\Users\Chaun\Documents\Visual Studio 2017\Projects\ReportManagement\ReportManagement\bin\Release\netcoreapp1.1\ReportManagement.runtimeconfig.dev.json
+C:\Users\Chaun\Documents\Visual Studio 2017\Projects\ReportManagement\ReportManagement\bin\Release\netcoreapp1.1\ReportManagement.dll
+C:\Users\Chaun\Documents\Visual Studio 2017\Projects\ReportManagement\ReportManagement\bin\Release\netcoreapp1.1\ReportManagement.pdb
+C:\Users\Chaun\Documents\Visual Studio 2017\Projects\ReportManagement\ReportManagement\obj\Release\netcoreapp1.1\ReportManagement.csprojResolveAssemblyReference.cache
+C:\Users\Chaun\Documents\Visual Studio 2017\Projects\ReportManagement\ReportManagement\obj\Release\netcoreapp1.1\ReportManagement.csproj.CoreCompileInputs.cache
+C:\Users\Chaun\Documents\Visual Studio 2017\Projects\ReportManagement\ReportManagement\obj\Release\netcoreapp1.1\ReportManagement.AssemblyInfoInputs.cache
+C:\Users\Chaun\Documents\Visual Studio 2017\Projects\ReportManagement\ReportManagement\obj\Release\netcoreapp1.1\ReportManagement.AssemblyInfo.cs
+C:\Users\Chaun\Documents\Visual Studio 2017\Projects\ReportManagement\ReportManagement\obj\Release\netcoreapp1.1\ReportManagement.dll
+C:\Users\Chaun\Documents\Visual Studio 2017\Projects\ReportManagement\ReportManagement\obj\Release\netcoreapp1.1\ReportManagement.pdb
+C:\Users\Chaun\Documents\GitHub\ReportPortal\ReportManagement\obj\Release\netcoreapp1.1\ReportManagement.csproj.CoreCompileInputs.cache
+C:\Users\Chaun\Documents\GitHub\ReportPortal\ReportManagement\obj\Release\netcoreapp1.1\ReportManagement.AssemblyInfoInputs.cache
+C:\Users\Chaun\Documents\GitHub\ReportPortal\ReportManagement\obj\Release\netcoreapp1.1\ReportManagement.AssemblyInfo.cs
+C:\Users\Chaun\Documents\GitHub\ReportPortal\ReportManagement\bin\Release\netcoreapp1.1\ReportManagement.deps.json
+C:\Users\Chaun\Documents\GitHub\ReportPortal\ReportManagement\bin\Release\netcoreapp1.1\ReportManagement.runtimeconfig.json
+C:\Users\Chaun\Documents\GitHub\ReportPortal\ReportManagement\bin\Release\netcoreapp1.1\ReportManagement.runtimeconfig.dev.json
+C:\Users\Chaun\Documents\GitHub\ReportPortal\ReportManagement\bin\Release\netcoreapp1.1\ReportManagement.dll
+C:\Users\Chaun\Documents\GitHub\ReportPortal\ReportManagement\bin\Release\netcoreapp1.1\ReportManagement.pdb
+C:\Users\Chaun\Documents\GitHub\ReportPortal\ReportManagement\bin\Release\netcoreapp1.1\Google.Authenticator.dll
+C:\Users\Chaun\Documents\GitHub\ReportPortal\ReportManagement\obj\Release\netcoreapp1.1\ReportManagement.csprojResolveAssemblyReference.cache
+C:\Users\Chaun\Documents\GitHub\ReportPortal\ReportManagement\obj\Release\netcoreapp1.1\ReportManagement.dll
+C:\Users\Chaun\Documents\GitHub\ReportPortal\ReportManagement\obj\Release\netcoreapp1.1\ReportManagement.pdb

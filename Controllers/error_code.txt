@@ -1,0 +1,10 @@
+-1> Unknown error
+ 0> Success
+ 1> User does not have permission
+ 2> Object does not exist
+ 3> Object already exists
+ 4> Invalid request
+ 5> Unknown status code
+ 6> Site already approved
+ 7> Action already completed
+ 8> Invalid verification code

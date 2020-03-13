@@ -1,0 +1,88 @@
+<div layout-fill ng-cloak>
+	<md-content layout="row" layout-align="center center" md-colors="::{'background': 'blue-grey-100'}" hide-xs>
+		<span flex="10"></span>
+		<div layout="column" md-colors="::{'background': 'grey-A100'}" layout-fill flex md-whiteframe="4">
+			<div>
+				<!-- Title -->
+				<div layout-padding layout="row">
+					<span flex></span>
+					<p class="md-display-1">Modify Users</p>
+					<span flex></span>
+				</div>
+				<br /><br />
+				<!-- Filters -->
+				<div layout="row">
+					<span flex></span>
+					<md-input-container style="margin: 0 0; padding: 2px 16px 2px 2px;">
+						<lable>Search</lable>
+						<input aria-label="search-box" ng-model="filter.searchText" ng-change="::searchQueryChanged()" />
+					</md-input-container>
+				</div>
+			</div>
+			<div layout="column" flex>
+				<md-data-table-container>
+					<table data-md-table data-md-row-select="rowSelected" ng-model="selected">
+						<thead md-head data-md-order="query.order" md-on-reorder="onReorder">
+							<tr md-row>
+								<th	style="padding:0 24px;" md-column md:order:by="id">ID</th>
+								<th flex md-column md:order:by="userName"><span>Username</span></th>
+								<th flex md-column md:order:by="name"><span flex>Name</span></th>
+								<th flex md-column md:order:by="email"><span flex>Email</span></th>
+								<th flex md-column md:order:by="isDistributor"><span flex>Distributor</span></th>
+							</tr>
+						</thead>
+						<tbody md-body>
+							<tr md-row md-select="editUser" md-select-id="name" ng-repeat="user in users | filter: filter.searchText | orderBy: query.order | limitTo: query.limit : (query.page - 1) * query.limit" md-colors="{'background-color': ($index % 2 == 0 ? '{{theme}}-primary-50' : 'grey-A100')}">
+								<td style="padding:0;" md-cell><a href="/edit-user/{{user.id}}"><md-button ng-click="null()" style="padding:0;" class="md-raised md-primary">{{::user.id}}</md-button></a></td>
+								<td md-cell>{{::user.userName}}</td>
+								<td md-cell>{{::user.name}}</td>
+								<td md-cell>{{::user.email}}</td>
+								<td md-cell>{{::(user.isDistributor || user.level == 3 ? 'Yes' : 'No')}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</md-data-table-container>
+				<md-table-pagination md-colors="{'background-color': '{{theme}}-primary'}" style="height:28px; min-height:28px;" md-limit="query.limit" md-limit-options="limitOptions" md-page="query.page" md-total="{{::users.length}}" md-page-select="options.pageSelect" md-boundary-links="options.boundaryLinks"></md-table-pagination>
+			</div>
+		</div>
+		<span flex="10"></span>
+	</md-content>
+	<div hide show-xs>
+		<div flex layout="column" layout-align="start center" md-colors="{'background-color': 'grey-A100'}">
+			<div flex layout="row">
+				<span flex></span><h1>Users</h1><span flex></span>
+			</div><br /><br /><br /><br />
+		</div>
+		<md-divider></md-divider>
+		<div flex layout="column">
+			<div layout="column">
+				<div style="min-height: 27px;" layout="row" flex md-colors="{'background-color': '{{theme}}-primary'}">
+					<md-input-container style="margin:-4px 0 0 0;" md-colors="{'color': 'grey-A100'}" flex>
+						<label>Search</label>
+						<input ng-model="filter.searchText" ng-change="::searchQueryChanged()" />
+					</md-input-container>
+				</div>
+			</div>
+		</div>
+		<a style="text-decoration:none;color:inherit" href="/edit-user/{{u.id}}" ng-repeat-start="u in users | orderBy: query.order | filter: filter.searchText | limitTo: query.limit : (query.page - 1) * query.limit">
+			<div class="editUserWrapper" layout="row" flex layout-align="start center" style="width:100%;height:48px;min-height:48px;" md-colors="{'background-color': 'grey-A100'}">
+				<md-icon style="min-height:12px;height:12px;" md-colors="{'color': u.active ? 'green' : 'red'}" md-svg-icon="status-icon"></md-icon>
+				<p class="md-body-2">{{u.id}}</p><span flex="5"></span><p class="md-body-2">{{u.userName}}</p>
+				<span flex></span>
+				<p class="md-body-2">{{u.name}}</p><span flex="5"></span>
+			</div>
+		</a>
+		<md-divider ng-repeat-end></md-divider>
+		<div style="min-height: 27px;" layout="row" flex md-colors="{'background-color': '{{theme}}-primary'}">
+			<span flex="5"></span>
+			<p style="margin:7px 0 0 0;" class="md-caption">Rows per page:</p><span flex="5"></span>
+			<md-select class="md-table-select" ng-model="query.limit">
+				<md-option ng-repeat="value in limitOptions" ng-value="value.value || value">{{value.label || value}}</md-option>
+			</md-select><span flex="5"></span>
+			<p style="margin:7px 0 0 0;" class="md-caption">{{1 + ((query.page - 1) * query.limit)}} - {{query.limit * query.page < users.length ? query.limit * query.page : users.length}} of {{users.length}}</p>
+			<md-icon md-svg-icon="navigate-before.svg" class="ng-scope md-{{theme}}-theme" aria-hidden="true" ng-click="previous()"></md-icon>
+			<md-icon md-svg-icon="navigate-next.svg" class="ng-scope md-{{theme}}-theme" aria-hidden="true" ng-click="next()"></md-icon>
+			<span flex="5"></span>
+		</div>
+	</div>
+</div>
